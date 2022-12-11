@@ -4,6 +4,10 @@ import com.nativegame.nattyengine.entity.particles.Particle;
 
 import java.util.Random;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class ScaleInitializer implements ParticleInitializer {
 
     private final float mInitialValue;

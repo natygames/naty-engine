@@ -4,6 +4,10 @@ import com.nativegame.nattyengine.Game;
 import com.nativegame.nattyengine.event.GameEvent;
 import com.nativegame.nattyengine.event.GameEventListener;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public abstract class GameObject implements Updatable, GameEventListener {
 
     protected final Game mGame;

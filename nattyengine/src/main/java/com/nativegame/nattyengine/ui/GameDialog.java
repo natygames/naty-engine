@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class GameDialog implements OnTouchListener, Animation.AnimationListener {
 
     protected final GameActivity mParent;

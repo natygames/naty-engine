@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class ParticleSystem extends GameObject {
 
     public static final int RATE_LOW = 10;

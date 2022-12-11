@@ -8,6 +8,10 @@ import android.media.SoundPool;
 
 import java.util.HashMap;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public abstract class SoundManager {
 
     private static final int MAX_STREAMS = 10;

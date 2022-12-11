@@ -11,6 +11,10 @@ import com.nativegame.nattyengine.Game;
 import com.nativegame.nattyengine.entity.Drawable;
 import com.nativegame.nattyengine.entity.GameObject;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public abstract class Sprite extends GameObject implements Drawable {
 
     protected final float mPixelFactor;

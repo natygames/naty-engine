@@ -4,6 +4,10 @@ import android.graphics.Canvas;
 
 import com.nativegame.nattyengine.Game;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public abstract class UIGameObject extends GameObject implements Drawable {
 
     private boolean mUIHaveChanged = false;

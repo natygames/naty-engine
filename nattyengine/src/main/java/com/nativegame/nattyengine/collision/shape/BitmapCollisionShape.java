@@ -8,6 +8,10 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class BitmapCollisionShape extends CollisionShape {
 
     private final Bitmap mCollisionBitmap;

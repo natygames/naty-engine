@@ -2,6 +2,10 @@ package com.nativegame.nattyengine.sound;
 
 import android.media.SoundPool;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class Sound {
 
     private static final long MIN_TIMEOUT = 50;

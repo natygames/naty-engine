@@ -7,6 +7,10 @@ import android.graphics.Rect;
 import com.nativegame.nattyengine.collision.Collidable;
 import com.nativegame.nattyengine.collision.CollisionType;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class CollisionHandler {
 
     private CollisionHandler() {

@@ -5,6 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class CircleCollisionShape extends CollisionShape {
 
     private final Bitmap mCollisionBitmap;

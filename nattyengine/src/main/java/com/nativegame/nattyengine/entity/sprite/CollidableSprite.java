@@ -7,6 +7,10 @@ import com.nativegame.nattyengine.collision.Collidable;
 import com.nativegame.nattyengine.collision.CollisionType;
 import com.nativegame.nattyengine.collision.shape.ShapeCollidable;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public abstract class CollidableSprite extends Sprite implements Collidable {
 
     private CollisionType mCollisionType = CollisionType.ACTIVE;

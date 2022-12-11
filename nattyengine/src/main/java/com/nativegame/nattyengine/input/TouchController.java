@@ -3,6 +3,10 @@ package com.nativegame.nattyengine.input;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class TouchController implements View.OnTouchListener {
 
     public float mXDown, mYDown;   // Player press position

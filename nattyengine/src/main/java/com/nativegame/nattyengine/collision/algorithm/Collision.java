@@ -5,6 +5,10 @@ import com.nativegame.nattyengine.collision.Collidable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class Collision {
 
     public Collidable mObjectA;

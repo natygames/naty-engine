@@ -9,6 +9,10 @@ import com.nativegame.nattyengine.entity.Drawable;
 
 import java.util.List;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class GameView extends View {
 
     private List<Drawable> mDrawables;

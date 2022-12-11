@@ -11,6 +11,10 @@ import com.nativegame.nattyengine.sound.SoundManager;
 
 import java.util.Stack;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class GameActivity extends AppCompatActivity {
 
     private static final String TAG_FRAGMENT = "content";
