@@ -27,7 +27,7 @@ public class BitmapCollisionShape extends CollisionShape {
         Canvas canvas = new Canvas(bitmap);
         // Draw a yellow bitmap on canvas
         Paint paint = new Paint();
-        paint.setColorFilter(new PorterDuffColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP));
+        paint.setColorFilter(new PorterDuffColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(sourceBitmap, null, new Rect(0, 0, width, height), paint);
         return bitmap;
     }
