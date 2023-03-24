@@ -3,12 +3,11 @@
 ### Natty Engine is a 2D Android game engine library help you make 2D game in Android Studio
 
 ## Features
-* Game Object Model
-* Particle System
-* Sound control
-* Event and Input control
-* Pixel Perfect Collision
-* Native Android UI (Dialog, Fragment...)
+* Entity - Sprite, Animation, ParticleSystem, Modifier...
+* Audio - Audio control with Andriod SoundPool and MediaPlayer API
+* Input - Touch, Acceleration and Orientation
+* Asset - Texture, Audio, and Android Resource management tool
+* UI - Native Android UI with Fragment, Dialog, Button...
 
 ## Setup
 Add the jitpack
@@ -28,15 +27,8 @@ dependencies {
 ```
 
 ## Game made with Natty Engine
+* ### [Juicy Match](https://github.com/nativegamestudio/juicy-match)
 * ### [Animals Pop](https://github.com/nativegamestudio/animals-pop)
-
-## Future Development
-* Camera
-* Animation 
-* Level editor
-* More input control (Sensor, Joystick...)
-* More data storage (Preference, SQLite...)
-
 
 ## License
  Natty Engine is licensed under the [MIT license](https://github.com/nativegamestudio/natty-engine/blob/master/LICENSE)
