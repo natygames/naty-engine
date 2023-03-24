@@ -1,94 +1,188 @@
 package com.nativegame.nattyengine.entity.sprite;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 
-import com.nativegame.nattyengine.Game;
-import com.nativegame.nattyengine.entity.Drawable;
-import com.nativegame.nattyengine.entity.GameObject;
+import com.nativegame.nattyengine.engine.Engine;
+import com.nativegame.nattyengine.engine.camera.Camera;
+import com.nativegame.nattyengine.entity.shape.RectangleShape;
+import com.nativegame.nattyengine.texture.Texture;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public abstract class Sprite extends GameObject implements Drawable {
+public class Sprite extends RectangleShape {
 
-    protected final float mPixelFactor;
+    protected Texture mTexture;
+    protected float mScaleX = 1;
+    protected float mScaleY = 1;
+    protected float mRotation;
+    protected float mAlpha = 255;
 
-    public Bitmap mBitmap;
-    public int mWidth;
-    public int mHeight;
-    public float mX;
-    public float mY;
-    public int mLayer;
-    public float mRotation;
-    public float mScale = 1;
-    public float mAlpha = 255;
-    public boolean mIsVisible = true;
+    private float mScalePivotX;
+    private float mScalePivotY;
+    private float mRotationPivotX;
+    private float mRotationPivotY;
 
     private final Matrix mMatrix = new Matrix();
-    private final Paint mPaint = new Paint();
 
-    protected Sprite(Game game, int drawableId) {
-        super(game);
-        mPixelFactor = game.getPixelFactor();
-        setSpriteBitmap(drawableId);
+    //--------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------
+    public Sprite(Engine engine, Texture texture) {
+        this(engine, 0, 0, texture);
     }
 
-    protected Bitmap getBitmapFromId(int drawableId) {
-        Resources r = mGame.getGameActivity().getResources();
-        return ((BitmapDrawable) r.getDrawable(drawableId)).getBitmap();
+    public Sprite(Engine engine, float x, float y, Texture texture) {
+        super(engine, x, y, texture.getWidth(), texture.getHeight());
+        mTexture = texture;
+        resetScalePivot();
+        resetRotationPivot();
+    }
+    //========================================================
+
+    //--------------------------------------------------------
+    // Getter and Setter
+    //--------------------------------------------------------
+    public Texture getTexture() {
+        return mTexture;
     }
 
-    public void setSpriteBitmap(int drawableId) {
-        mBitmap = getBitmapFromId(drawableId);
-        mWidth = (int) (mBitmap.getWidth() * mPixelFactor);
-        mHeight = (int) (mBitmap.getHeight() * mPixelFactor);
+    public void setTexture(Texture texture) {
+        mTexture = texture;
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        if (mX > canvas.getWidth()
-                || mY > canvas.getHeight()
-                || mX < -mWidth
-                || mY < -mHeight) {
-            return;
+    public float getScaleX() {
+        if (mScaleX < 0) {
+            return 0;
         }
+        return mScaleX;
+    }
 
-        float scaleFactor = mPixelFactor * mScale;
-        float translateFactor = (1 - mScale) / 2;
+    public void setScaleX(float scaleX) {
+        mScaleX = scaleX;
+    }
+
+    public float getScaleY() {
+        if (mScaleY < 0) {
+            return 0;
+        }
+        return mScaleY;
+    }
+
+    public void setScaleY(float scaleY) {
+        mScaleY = scaleY;
+    }
+
+    public void setScale(float scale) {
+        mScaleX = scale;
+        mScaleY = scale;
+    }
+
+    public float getRotation() {
+        return mRotation;
+    }
+
+    public void setRotation(float rotation) {
+        mRotation = rotation;
+    }
+
+    public float getRotationPivotX() {
+        return mRotationPivotX;
+    }
+
+    public void setRotationPivotX(float rotationPivotX) {
+        mRotationPivotX = rotationPivotX;
+    }
+
+    public float getRotationPivotY() {
+        return mRotationPivotY;
+    }
+
+    public void setRotationPivotY(float rotationPivotY) {
+        mRotationPivotY = rotationPivotY;
+    }
+
+    public float getScalePivotX() {
+        return mScalePivotX;
+    }
+
+    public void setScalePivotX(float scalePivotX) {
+        mScalePivotX = scalePivotX;
+    }
+
+    public float getScalePivotY() {
+        return mScalePivotY;
+    }
+
+    public void setScalePivotY(float scalePivotY) {
+        mScalePivotY = scalePivotY;
+    }
+    //========================================================
+
+    //--------------------------------------------------------
+    // Overriding methods
+    //--------------------------------------------------------
+    @Override
+    public int getAlpha() {
+        if (mAlpha < 0) {
+            return 0;
+        }
+        if (mAlpha > 255) {
+            return 255;
+        }
+        return (int) mAlpha;
+    }
+
+    @Override
+    public void setAlpha(int alpha) {
+        mAlpha = alpha;
+    }
+
+    @Override
+    public void onDraw(Canvas canvas, Camera camera) {
+        float offsetX = (1 - mScaleX) * mScalePivotX;
+        float offsetY = (1 - mScaleY) * mScalePivotY;
         mMatrix.reset();
-        mMatrix.postScale(scaleFactor, scaleFactor);
-        mMatrix.postTranslate(mX + translateFactor * mWidth, mY + translateFactor * mHeight);
-        mMatrix.postRotate(mRotation, mX + mWidth / 2f, mY + mHeight / 2f);
-        mPaint.setAlpha((int) mAlpha);
-        canvas.drawBitmap(mBitmap, mMatrix, mPaint);
+        mMatrix.postScale(getScaleX() * camera.getPixelFactor(), getScaleY() * camera.getPixelFactor());
+        mMatrix.postTranslate(camera.getWorldToScreenX(mX + offsetX), camera.getWorldToScreenY(mY + offsetY));
+        mMatrix.postRotate(mRotation, camera.getWorldToScreenX(mX + mRotationPivotX), camera.getWorldToScreenY(mY + mRotationPivotY));
+        mPaint.setAlpha(getAlpha());
+        canvas.drawBitmap(mTexture.getBitmap(), mMatrix, mPaint);
     }
 
     @Override
-    public void addToGame() {
-        mIsVisible = true;
-        super.addToGame();
+    public void reset() {
+        super.reset();
+        mScaleX = 1;
+        mScaleY = 1;
+        mRotation = 0;
+        mAlpha = 255;
+        mMatrix.reset();
+        resetSize();
+        resetScalePivot();
+        resetRotationPivot();
+    }
+    //========================================================
+
+    //--------------------------------------------------------
+    // Methods
+    //--------------------------------------------------------
+    public void resetSize() {
+        mWidth = mTexture.getWidth();
+        mHeight = mTexture.getHeight();
     }
 
-    @Override
-    public void removeFromGame() {
-        mIsVisible = false;
-        super.removeFromGame();
+    public void resetScalePivot() {
+        mScalePivotX = mWidth / 2f;
+        mScalePivotY = mHeight / 2f;
     }
 
-    @Override
-    public int getLayer() {
-        return mLayer;
+    public void resetRotationPivot() {
+        mRotationPivotX = mWidth / 2f;
+        mRotationPivotY = mHeight / 2f;
     }
-
-    @Override
-    public boolean isVisible() {
-        return mIsVisible;
-    }
+    //========================================================
 
 }
