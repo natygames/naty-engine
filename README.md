@@ -1,13 +1,24 @@
 # natty-engine
 
-### Natty Engine is a 2D Android game engine library help you make 2D game in Android Studio
+<div align="center">
+<img src="https://user-images.githubusercontent.com/93536412/227720045-6f8f4242-8c3f-4bec-a807-f41b69ed3139.png" width="500">
+
+![version](https://img.shields.io/badge/version-1.1-brightgreen)
+![minSdk](https://img.shields.io/badge/minSdk-21-brightgreen)
+![license](https://img.shields.io/badge/license-MIT-brightgreen)
+
+**Natty Engine is an open-source 2D Android game engine help you built game in Android studio**
+</div>
+
+---
 
 ## Features
-* Entity - Sprite, Animation, ParticleSystem, Modifier...
-* Audio - Audio control with Andriod SoundPool and MediaPlayer API
-* Input - Touch, Acceleration and Orientation
-* Asset - Texture, Audio, and Android Resource management tool
-* UI - Native Android UI with Fragment, Dialog, Button...
+* :rocket: **Entity** - Sprite, Animation, ParticleSystem, Modifier...
+* :musical_note: **Audio** - Audio control with Andriod SoundPool and MediaPlayer API
+* :atom: **Physic** - Pixel perfect collision using spatial partitioning
+* :joystick: **Input** - Touch, Acceleration and Orientation support
+* :open_file_folder: **Asset** - Texture, Audio, and Android Resource management tool
+* :gear: **UI** - Native Android UI with Fragment, Dialog, Button...
 
 ## Setup
 Add the jitpack
@@ -26,7 +37,7 @@ dependencies {
 }
 ```
 
-## Game made with Natty Engine
+## Game Project
 * ### [Juicy Match](https://github.com/nativegamestudio/juicy-match)
 * ### [Animals Pop](https://github.com/nativegamestudio/animals-pop)
 
