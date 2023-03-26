@@ -10,7 +10,7 @@
 
 <img src="https://user-images.githubusercontent.com/93536412/227760931-fe5e06c5-7623-4bb5-b00f-00820c949b9b.png" width="500">
 
-**Natty Engine is an open-source 2D Android game engine help you built game in Android studio**
+**Natty Engine is an open-source 2D Android game engine help you built game in Android Studio**
 </div>
 
 ---
@@ -41,8 +41,8 @@ dependencies {
 ```
 
 ## Game Project
-* ### [Juicy Match](https://github.com/nativegamestudio/juicy-match)
-* ### [Animals Pop](https://github.com/nativegamestudio/animals-pop)
+[<img src="https://user-images.githubusercontent.com/93536412/227769818-765004b1-7ed5-4b88-9156-1e3d9fd15dcb.png" width="70">](https://github.com/nativegamestudio/juicy-match) 
+[<img src="https://user-images.githubusercontent.com/93536412/227769871-22eb91ff-d72d-45c4-b217-ce3fe44111ac.png" width="70">](https://github.com/nativegamestudio/animals-pop)
 
 ## License
  Natty Engine is licensed under the [MIT license](https://github.com/nativegamestudio/natty-engine/blob/master/LICENSE)
