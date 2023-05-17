@@ -37,7 +37,7 @@ public class ParticleSystem extends Entity implements Modifier.ModifierListener 
     public static final long INFINITE = -1;
 
     private final Pool<Particle> mParticlePool;
-    private final DurationModifier<ParticleSystem> mDurationModifier;
+    private final DurationModifier mDurationModifier;
 
     private int mLayer;
     private float mEmissionMinX;
@@ -67,7 +67,7 @@ public class ParticleSystem extends Entity implements Modifier.ModifierListener 
                 return new Particle(ParticleSystem.this, engine, texture);
             }
         }, minParticle, maxParticle);
-        mDurationModifier = new DurationModifier<>(INFINITE);
+        mDurationModifier = new DurationModifier(INFINITE);
         mDurationModifier.setListener(this);
     }
     //========================================================

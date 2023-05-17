@@ -13,6 +13,7 @@ public abstract class BaseModifier<T extends Entity> implements Modifier<T> {
     private long mStartDelay;
     private long mTotalTime;
     private boolean mIsRunning = false;
+    private boolean mIsLooping = false;
     private boolean mIsAutoRemove = false;
 
     //--------------------------------------------------------
@@ -73,6 +74,16 @@ public abstract class BaseModifier<T extends Entity> implements Modifier<T> {
     }
 
     @Override
+    public boolean isLooping() {
+        return mIsLooping;
+    }
+
+    @Override
+    public void setLooping(boolean looping) {
+        mIsLooping = looping;
+    }
+
+    @Override
     public boolean isAutoRemove() {
         return mIsAutoRemove;
     }
@@ -97,14 +108,16 @@ public abstract class BaseModifier<T extends Entity> implements Modifier<T> {
         mTotalTime += elapsedMillis;
         if (mTotalTime >= mDuration + mStartDelay) {
             onEndModifier(entity);
+            if (!mIsLooping) {
+                mIsRunning = false;
+                if (mIsAutoRemove) {
+                    entity.removeFromGame();
+                }
+            }
+            mTotalTime = 0;
             if (mListener != null) {
                 mListener.onModifierComplete();
             }
-            if (mIsAutoRemove) {
-                entity.removeFromGame();
-            }
-            mIsRunning = false;
-            mTotalTime = 0;
         } else if (mTotalTime < mStartDelay) {
             onStartModifier(entity);
         } else {

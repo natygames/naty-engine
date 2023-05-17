@@ -2,7 +2,7 @@ package com.nativegame.nattyengine.engine.collision.hitbox;
 
 import android.graphics.Bitmap;
 
-import com.nativegame.nattyengine.util.bitmap.ShapeUtils;
+import com.nativegame.nattyengine.util.bitmap.BitmapUtils;
 
 /**
  * Created by Oscar Liang on 2022/12/11
@@ -17,7 +17,7 @@ public class OvalHitBox extends BaseHitBox {
     //--------------------------------------------------------
     public OvalHitBox(int hitBoxWidth, int hitBoxHeight) {
         super(hitBoxWidth, hitBoxHeight);
-        mHitBoxBitmap = ShapeUtils.createOvalBitmap(hitBoxWidth, hitBoxHeight);
+        mHitBoxBitmap = BitmapUtils.createOvalBitmap(hitBoxWidth, hitBoxHeight);
     }
     //========================================================
 

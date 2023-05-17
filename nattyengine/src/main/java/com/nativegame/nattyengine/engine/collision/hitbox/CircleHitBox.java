@@ -2,7 +2,7 @@ package com.nativegame.nattyengine.engine.collision.hitbox;
 
 import android.graphics.Bitmap;
 
-import com.nativegame.nattyengine.util.bitmap.ShapeUtils;
+import com.nativegame.nattyengine.util.bitmap.BitmapUtils;
 
 /**
  * Created by Oscar Liang on 2022/12/11
@@ -17,7 +17,7 @@ public class CircleHitBox extends BaseHitBox {
     //--------------------------------------------------------
     public CircleHitBox(int hitBoxRadius) {
         super(hitBoxRadius * 2, hitBoxRadius * 2);
-        mHitBoxBitmap = ShapeUtils.createCircleBitmap(hitBoxRadius);
+        mHitBoxBitmap = BitmapUtils.createCircleBitmap(hitBoxRadius);
     }
     //========================================================
 

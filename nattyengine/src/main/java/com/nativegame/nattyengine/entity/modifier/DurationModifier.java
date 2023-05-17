@@ -6,7 +6,7 @@ import com.nativegame.nattyengine.entity.Entity;
  * Created by Oscar Liang on 2022/12/11
  */
 
-public class DurationModifier<T extends Entity> extends BaseModifier<T> {
+public class DurationModifier extends BaseModifier<Entity> {
 
     //--------------------------------------------------------
     // Constructors
@@ -24,19 +24,19 @@ public class DurationModifier<T extends Entity> extends BaseModifier<T> {
     // Overriding methods
     //--------------------------------------------------------
     @Override
-    protected void onStartModifier(T entity) {
+    protected void onStartModifier(Entity entity) {
     }
 
     @Override
-    protected void onUpdateModifier(T entity, float durationPercentage) {
+    protected void onUpdateModifier(Entity entity, float durationPercentage) {
     }
 
     @Override
-    protected void onEndModifier(T entity) {
+    protected void onEndModifier(Entity entity) {
     }
 
     @Override
-    protected void onResetModifier(T entity) {
+    protected void onResetModifier(Entity entity) {
     }
     //========================================================
 

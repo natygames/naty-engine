@@ -13,7 +13,7 @@ public class Music extends BaseAudio {
     private static final float DEFAULT_MUSIC_VOLUME = 1.0f;
 
     private MediaPlayer mMediaPlayer;
-    private boolean mIsPause = false;
+    private boolean mIsCurrentStream = true;
 
     //--------------------------------------------------------
     // Constructors
@@ -43,6 +43,14 @@ public class Music extends BaseAudio {
     public void setVolume(float leftVolume, float rightVolume) {
         mMediaPlayer.setVolume(leftVolume, rightVolume);
     }
+
+    public boolean isCurrentStream() {
+        return mIsCurrentStream;
+    }
+
+    public void setCurrentStream(boolean isCurrentStream) {
+        mIsCurrentStream = isCurrentStream;
+    }
     //========================================================
 
     //--------------------------------------------------------
@@ -50,7 +58,7 @@ public class Music extends BaseAudio {
     //--------------------------------------------------------
     @Override
     public void play() {
-        if (!getParent().isAudioEnable()) {
+        if (!getParent().isAudioEnable() && mIsCurrentStream) {
             return;
         }
         if (!mMediaPlayer.isPlaying()) {
@@ -63,7 +71,9 @@ public class Music extends BaseAudio {
         if (!getParent().isAudioEnable()) {
             return;
         }
-        mMediaPlayer.pause();
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.pause();
+        }
         mMediaPlayer.seekTo(0);
     }
 
@@ -72,20 +82,18 @@ public class Music extends BaseAudio {
         if (!getParent().isAudioEnable()) {
             return;
         }
-        if (mMediaPlayer.isPlaying() && !mIsPause) {
+        if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
-            mIsPause = true;
         }
     }
 
     @Override
     public void resume() {
-        if (!getParent().isAudioEnable()) {
+        if (!getParent().isAudioEnable() && mIsCurrentStream) {
             return;
         }
-        if (!mMediaPlayer.isPlaying() && mIsPause) {
+        if (!mMediaPlayer.isPlaying()) {
             mMediaPlayer.start();
-            mIsPause = false;
         }
     }
 

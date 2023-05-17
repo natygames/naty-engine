@@ -42,7 +42,6 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
     private final QuadTree mQuadTree = new QuadTree();
     private final List<Updatable> mUpdatables = new ArrayList<>();
     private final List<Drawable> mDrawables = new ArrayList<>();
-    private final List<Disposable> mDisposable = new ArrayList<>();
     private final List<Updatable> mUpdatablesToAdd = new ArrayList<>();
     private final List<Updatable> mUpdatablesToRemove = new ArrayList<>();
     private final LayerComparator mLayerComparator = new LayerComparator();
@@ -146,6 +145,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
             }
         }
     }
+    //========================================================
 
     //--------------------------------------------------------
     // Methods
@@ -203,11 +203,14 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         if (mOrientationController != null) {
             mOrientationController.stop();
         }
-        int size = mDisposable.size();
+        int size = mUpdatables.size();
         for (int i = 0; i < size; i++) {
-            Disposable d = mDisposable.get(i);
-            if (!d.isDisposed()) {
-                d.dispose();
+            Updatable u = mUpdatables.get(i);
+            if (u instanceof Disposable) {
+                Disposable d = (Disposable) u;
+                if (!d.isDisposed()) {
+                    d.dispose();
+                }
             }
         }
     }
@@ -299,9 +302,6 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         if (updatable instanceof Drawable) {
             mDrawables.add((Drawable) updatable);
         }
-        if (updatable instanceof Disposable) {
-            mDisposable.add((Disposable) updatable);
-        }
         if (updatable instanceof Collidable) {
             Collidable c = (Collidable) updatable;
             if (c.getCollisionType() != CollisionType.NONE) {
@@ -315,9 +315,6 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         if (updatable instanceof Drawable) {
             mDrawables.remove((Drawable) updatable);
         }
-        if (updatable instanceof Disposable) {
-            mDisposable.remove((Disposable) updatable);
-        }
         if (updatable instanceof Collidable) {
             mQuadTree.removeCollidable((Collidable) updatable);
         }
@@ -328,9 +325,11 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
             throw new IllegalStateException("'" + updatable.getClass().getSimpleName() + "' is already in the engine!");
         }
         updatable.setRunning(true);
-        // Add to waiting pool if engine running
+        // Add to buffer if engine is running
         if (isRunning()) {
-            mUpdatablesToAdd.add(updatable);
+            synchronized (mDrawables) {
+                mUpdatablesToAdd.add(updatable);
+            }
         } else {
             addToEngine(updatable);
         }
@@ -341,12 +340,14 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
             throw new IllegalStateException("'" + updatable.getClass().getSimpleName() + "' is not in the engine!");
         }
         updatable.setRunning(false);
-        // Add to waiting pool if engine running
+        // Add to buffer if engine is running
         if (isRunning()) {
-            if (mUpdatablesToAdd.contains(updatable)) {
-                mUpdatablesToAdd.remove(updatable);
-            } else {
-                mUpdatablesToRemove.add(updatable);
+            synchronized (mDrawables) {
+                if (mUpdatablesToAdd.contains(updatable)) {
+                    mUpdatablesToAdd.remove(updatable);
+                } else {
+                    mUpdatablesToRemove.add(updatable);
+                }
             }
         } else {
             removeFromEngine(updatable);

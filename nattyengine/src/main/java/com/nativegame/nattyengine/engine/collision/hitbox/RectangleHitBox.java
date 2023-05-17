@@ -2,7 +2,7 @@ package com.nativegame.nattyengine.engine.collision.hitbox;
 
 import android.graphics.Bitmap;
 
-import com.nativegame.nattyengine.util.bitmap.ShapeUtils;
+import com.nativegame.nattyengine.util.bitmap.BitmapUtils;
 
 /**
  * Created by Oscar Liang on 2022/12/11
@@ -25,7 +25,7 @@ public class RectangleHitBox extends BaseHitBox {
 
     public RectangleHitBox(int hitBoxWidth, int hitBoxHeight, int radiusX, int radiusY) {
         super(hitBoxWidth, hitBoxHeight);
-        mHitBoxBitmap = ShapeUtils.createRectangleBitmap(hitBoxWidth, hitBoxHeight, radiusX, radiusY);
+        mHitBoxBitmap = BitmapUtils.createRectangleBitmap(hitBoxWidth, hitBoxHeight, radiusX, radiusY);
     }
     //========================================================
 

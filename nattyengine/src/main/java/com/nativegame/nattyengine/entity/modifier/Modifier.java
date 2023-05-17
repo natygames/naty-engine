@@ -26,6 +26,10 @@ public interface Modifier<T extends Entity> {
 
     void setRunning(boolean running);
 
+    boolean isLooping();
+
+    void setLooping(boolean looping);
+
     boolean isAutoRemove();
 
     void setAutoRemove(boolean autoRemove);
