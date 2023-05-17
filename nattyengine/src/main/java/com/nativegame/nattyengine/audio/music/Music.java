@@ -59,7 +59,7 @@ public class Music extends BaseAudio {
     //--------------------------------------------------------
     @Override
     public void play() {
-        if (!getParent().isAudioEnable() && !mIsCurrentStream) {
+        if (!getParent().isAudioEnable() || !mIsCurrentStream) {
             return;
         }
         if (!mMediaPlayer.isPlaying()) {
@@ -91,7 +91,7 @@ public class Music extends BaseAudio {
 
     @Override
     public void resume() {
-        if (!getParent().isAudioEnable() && !mIsCurrentStream) {
+        if (!getParent().isAudioEnable() || !mIsCurrentStream) {
             return;
         }
         if (!mMediaPlayer.isPlaying() && mIsPause) {
