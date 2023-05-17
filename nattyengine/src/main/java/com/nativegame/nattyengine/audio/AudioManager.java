@@ -8,6 +8,8 @@ public interface AudioManager<T extends Audio> {
 
     T load(int audioId);
 
+    void play();
+
     void stop();
 
     void pause();

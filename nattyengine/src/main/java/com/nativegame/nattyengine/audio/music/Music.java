@@ -14,6 +14,7 @@ public class Music extends BaseAudio {
 
     private MediaPlayer mMediaPlayer;
     private boolean mIsCurrentStream = true;
+    private boolean mIsPause = false;
 
     //--------------------------------------------------------
     // Constructors
@@ -58,7 +59,7 @@ public class Music extends BaseAudio {
     //--------------------------------------------------------
     @Override
     public void play() {
-        if (!getParent().isAudioEnable() && mIsCurrentStream) {
+        if (!getParent().isAudioEnable() && !mIsCurrentStream) {
             return;
         }
         if (!mMediaPlayer.isPlaying()) {
@@ -82,18 +83,20 @@ public class Music extends BaseAudio {
         if (!getParent().isAudioEnable()) {
             return;
         }
-        if (mMediaPlayer.isPlaying()) {
+        if (mMediaPlayer.isPlaying() && !mIsPause) {
             mMediaPlayer.pause();
+            mIsPause = true;
         }
     }
 
     @Override
     public void resume() {
-        if (!getParent().isAudioEnable() && mIsCurrentStream) {
+        if (!getParent().isAudioEnable() && !mIsCurrentStream) {
             return;
         }
-        if (!mMediaPlayer.isPlaying()) {
+        if (!mMediaPlayer.isPlaying() && mIsPause) {
             mMediaPlayer.start();
+            mIsPause = false;
         }
     }
 

@@ -29,6 +29,15 @@ public abstract class BaseAudioManager<T extends Audio> implements AudioManager<
     // Overriding methods
     //--------------------------------------------------------
     @Override
+    public void play() {
+        int size = mAudios.size();
+        for (int i = 0; i < size; i++) {
+            Audio audio = mAudios.get(i);
+            audio.play();
+        }
+    }
+
+    @Override
     public void stop() {
         int size = mAudios.size();
         for (int i = 0; i < size; i++) {

@@ -32,12 +32,12 @@ public class MusicManager extends BaseAudioManager<Music> {
 
     @Override
     protected void onAudioEnable() {
-        resume();
+        play();
     }
 
     @Override
     protected void onAudioDisable() {
-        pause();
+        stop();
     }
     //========================================================
 
