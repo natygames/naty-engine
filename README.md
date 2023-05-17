@@ -1,7 +1,7 @@
 <div align="center">
 <img src="https://user-images.githubusercontent.com/93536412/227720045-6f8f4242-8c3f-4bec-a807-f41b69ed3139.png" width="500">
 
-![version](https://img.shields.io/badge/version-1.1-brightgreen)
+[![](https://jitpack.io/v/nativegamestudio/natty-engine.svg)](https://jitpack.io/#nativegamestudio/natty-engine)
 ![platform](https://img.shields.io/badge/platform-Android-brightgreen)
 ![minSdk](https://img.shields.io/badge/minSdk-21-brightgreen)
 ![license](https://img.shields.io/badge/license-MIT-brightgreen)
