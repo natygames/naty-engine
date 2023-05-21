@@ -327,9 +327,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         updatable.setRunning(true);
         // Add to buffer if engine is running
         if (isRunning()) {
-            synchronized (mDrawables) {
-                mUpdatablesToAdd.add(updatable);
-            }
+            mUpdatablesToAdd.add(updatable);
         } else {
             addToEngine(updatable);
         }
@@ -342,12 +340,10 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         updatable.setRunning(false);
         // Add to buffer if engine is running
         if (isRunning()) {
-            synchronized (mDrawables) {
-                if (mUpdatablesToAdd.contains(updatable)) {
-                    mUpdatablesToAdd.remove(updatable);
-                } else {
-                    mUpdatablesToRemove.add(updatable);
-                }
+            if (mUpdatablesToAdd.contains(updatable)) {
+                mUpdatablesToAdd.remove(updatable);
+            } else {
+                mUpdatablesToRemove.add(updatable);
             }
         } else {
             removeFromEngine(updatable);

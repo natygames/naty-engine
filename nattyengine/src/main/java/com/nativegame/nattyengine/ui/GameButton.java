@@ -124,11 +124,17 @@ public class GameButton extends AppCompatImageButton {
     // Methods
     //--------------------------------------------------------
     public void addColorFilter(int color) {
+        if (getBackground() == null) {
+            return;
+        }
         getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         invalidate();
     }
 
     public void removeColorFilter() {
+        if (getBackground() == null) {
+            return;
+        }
         getBackground().clearColorFilter();
         invalidate();
     }
