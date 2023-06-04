@@ -203,16 +203,6 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         if (mOrientationController != null) {
             mOrientationController.stop();
         }
-        int size = mUpdatables.size();
-        for (int i = 0; i < size; i++) {
-            Updatable u = mUpdatables.get(i);
-            if (u instanceof Disposable) {
-                Disposable d = (Disposable) u;
-                if (!d.isDisposed()) {
-                    d.dispose();
-                }
-            }
-        }
     }
 
     public void pauseGame() {
@@ -248,6 +238,19 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         }
         if (mOrientationController != null) {
             mOrientationController.resume();
+        }
+    }
+
+    public void disposeGame() {
+        int size = mUpdatables.size();
+        for (int i = 0; i < size; i++) {
+            Updatable u = mUpdatables.get(i);
+            if (u instanceof Disposable) {
+                Disposable d = (Disposable) u;
+                if (!d.isDisposed()) {
+                    d.dispose();
+                }
+            }
         }
     }
 
