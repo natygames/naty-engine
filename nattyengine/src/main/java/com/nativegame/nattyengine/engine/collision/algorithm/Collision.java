@@ -28,7 +28,7 @@ public class Collision {
     //--------------------------------------------------------
     // Static methods
     //--------------------------------------------------------
-    public static Collision init(Collidable collidableA, Collidable collidableB) {
+    public static Collision initCollision(Collidable collidableA, Collidable collidableB) {
         if (COLLISION_POOL.isEmpty()) {
             return new Collision(collidableA, collidableB);
         }
@@ -38,7 +38,7 @@ public class Collision {
         return c;
     }
 
-    public static void returnToPool(Collision collision) {
+    public static void returnCollision(Collision collision) {
         collision.mCollidableA = null;
         collision.mCollidableB = null;
         COLLISION_POOL.add(collision);

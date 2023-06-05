@@ -39,25 +39,6 @@ public class QuadTreeNode {
         return mCollidables;
     }
 
-    public Rect getArea(int area) {
-        int startX = mArea.left;
-        int startY = mArea.top;
-        int width = mArea.width();
-        int height = mArea.height();
-        switch (area) {
-            case 0:
-                return new Rect(startX, startY, startX + width / 2, startY + height / 2);
-            case 1:
-                return new Rect(startX + width / 2, startY, startX + width, startY + height / 2);
-            case 2:
-                return new Rect(startX, startY + height / 2, startX + width / 2, startY + height);
-            case 3:
-                return new Rect(startX + width / 2, startY + height / 2, startX + width, startY + height);
-        }
-
-        return null;
-    }
-
     public void setArea(Rect area) {
         mArea.set(area);
     }
@@ -77,7 +58,7 @@ public class QuadTreeNode {
                 for (int j = i + 1; j < size; j++) {
                     Collidable collidableB = mCollidables.get(j);
                     if (CollisionAlgorithm.isCollisionsDetected(collidableA, collidableB)) {
-                        Collision c = Collision.init(collidableA, collidableB);
+                        Collision c = Collision.initCollision(collidableA, collidableB);
                         if (!hasBeenDetected(c, detectedCollisions)) {
                             detectedCollisions.add(c);
                             collidableA.onCollision(collidableB);
@@ -93,21 +74,40 @@ public class QuadTreeNode {
         mChildren.clear();
         // Add 4 children
         for (int i = 0; i < 4; i++) {
-            mChildren.add(mParent.getNode());
+            mChildren.add(mParent.obtainNode());
         }
         // Check children collision
         for (int i = 0; i < 4; i++) {
             QuadTreeNode node = mChildren.get(i);
-            node.setArea(getArea(i));
-            node.checkObjects(mCollidables);
+            node.setArea(getChildArea(i));
+            node.initChildArea(mCollidables);
             node.checkCollision(engine, detectedCollisions);
             // Clear and return to the pool
             node.getCollidables().clear();
-            mParent.returnToPool(node);
+            mParent.returnNode(node);
         }
     }
 
-    private void checkObjects(List<Collidable> collidables) {
+    private Rect getChildArea(int area) {
+        int startX = mArea.left;
+        int startY = mArea.top;
+        int width = mArea.width();
+        int height = mArea.height();
+        switch (area) {
+            case 0:
+                return new Rect(startX, startY, startX + width / 2, startY + height / 2);
+            case 1:
+                return new Rect(startX + width / 2, startY, startX + width, startY + height / 2);
+            case 2:
+                return new Rect(startX, startY + height / 2, startX + width / 2, startY + height);
+            case 3:
+                return new Rect(startX + width / 2, startY + height / 2, startX + width, startY + height);
+            default:
+                throw new IllegalArgumentException("Collision area not found!");
+        }
+    }
+
+    private void initChildArea(List<Collidable> collidables) {
         mCollidables.clear();
         int size = collidables.size();
         for (int i = 0; i < size; i++) {
@@ -122,7 +122,8 @@ public class QuadTreeNode {
     private boolean hasBeenDetected(Collision collision, List<Collision> detectedCollisions) {
         int size = detectedCollisions.size();
         for (int i = 0; i < size; i++) {
-            if (detectedCollisions.get(i).equals(collision)) {
+            Collision c = detectedCollisions.get(i);
+            if (c.equals(collision)) {
                 return true;
             }
         }

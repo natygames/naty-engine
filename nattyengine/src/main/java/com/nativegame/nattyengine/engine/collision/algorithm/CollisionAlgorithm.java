@@ -32,7 +32,7 @@ public class CollisionAlgorithm {
             return false;
         }
 
-        // Get the CollisionBox bounds
+        // Get the HitBox bounds
         Rect boundsA = collidableA.getCollisionHitBox().getCollisionBounds();
         Rect boundsB = collidableB.getCollisionHitBox().getCollisionBounds();
 

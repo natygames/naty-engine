@@ -52,8 +52,6 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
     public Engine(GameView gameView) {
         mGameView = gameView;
         mGameView.setListener(this);
-        // Init the collision area of QuadTree
-        mQuadTree.init(gameView.getWidth(), gameView.getHeight());
     }
     //========================================================
 
@@ -159,6 +157,9 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
             mCamera = new Camera(mGameView, mGameView.getWidth(), mGameView.getHeight(),
                     mGameView.getWidth(), mGameView.getHeight());
         }
+
+        // Init the collision area to world width and height
+        mQuadTree.init(mCamera.getWorldWidth(), mCamera.getWorldHeight());
 
         // Init the default TouchController
         if (mTouchController == null) {

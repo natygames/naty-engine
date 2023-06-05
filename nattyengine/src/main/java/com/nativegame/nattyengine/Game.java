@@ -71,6 +71,7 @@ public class Game {
     public final void stop() {
         if (mEngine.isRunning()) {
             mEngine.stopGame();
+            mEngine.disposeGame();
             onStop();
         }
     }

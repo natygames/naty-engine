@@ -14,11 +14,11 @@ import java.util.List;
 
 public class QuadTree {
 
-    private static final int MAX_TREE_NODE = 12;
+    private static final int MAX_NODE = 12;
 
     private final QuadTreeNode mRoot;
 
-    private final List<QuadTreeNode> mTreeNodePool = new ArrayList<>();
+    private final List<QuadTreeNode> mNodePool = new ArrayList<>();
     private final List<Collision> mDetectedCollisions = new ArrayList<>();
 
     //--------------------------------------------------------
@@ -27,8 +27,8 @@ public class QuadTree {
     public QuadTree() {
         mRoot = new QuadTreeNode(this);
         // We add them to the pool now
-        for (int i = 0; i < MAX_TREE_NODE; i++) {
-            mTreeNodePool.add(new QuadTreeNode(this));
+        for (int i = 0; i < MAX_NODE; i++) {
+            mNodePool.add(new QuadTreeNode(this));
         }
     }
     //========================================================
@@ -37,11 +37,7 @@ public class QuadTree {
     // Getter and Setter
     //--------------------------------------------------------
     public int getPoolSize() {
-        return mTreeNodePool.size();
-    }
-
-    public QuadTreeNode getNode() {
-        return mTreeNodePool.remove(0);
+        return mNodePool.size();
     }
     //========================================================
 
@@ -55,7 +51,7 @@ public class QuadTree {
     public void checkCollision(Engine engine) {
         // Clear the collisions from the previous loop
         while (!mDetectedCollisions.isEmpty()) {
-            Collision.returnToPool(mDetectedCollisions.remove(0));
+            Collision.returnCollision(mDetectedCollisions.remove(0));
         }
         mRoot.checkCollision(engine, mDetectedCollisions);
     }
@@ -68,8 +64,12 @@ public class QuadTree {
         mRoot.getCollidables().remove(collidable);
     }
 
-    public void returnToPool(QuadTreeNode treeNode) {
-        mTreeNodePool.add(treeNode);
+    public QuadTreeNode obtainNode() {
+        return mNodePool.remove(0);
+    }
+
+    public void returnNode(QuadTreeNode treeNode) {
+        mNodePool.add(treeNode);
     }
     //========================================================
 
