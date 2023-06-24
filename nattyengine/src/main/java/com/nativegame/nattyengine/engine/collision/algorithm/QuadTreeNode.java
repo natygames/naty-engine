@@ -61,8 +61,8 @@ public class QuadTreeNode {
                         Collision c = Collision.initCollision(collidableA, collidableB);
                         if (!hasBeenDetected(c, detectedCollisions)) {
                             detectedCollisions.add(c);
-                            collidableA.onCollision(collidableB);
-                            collidableB.onCollision(collidableA);
+                            collidableA.collide(collidableB);
+                            collidableB.collide(collidableA);
                         }
                     }
                 }

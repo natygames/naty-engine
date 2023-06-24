@@ -104,12 +104,16 @@ public abstract class RectangleShape extends Shape implements Collidable {
     }
 
     @Override
-    public void onCollision(Collidable collidable) {
+    public void collide(Collidable collidable) {
+        if (!isRunning()) {
+            return;
+        }
+        onCollision(collidable);
     }
 
     @Override
     public void onPostUpdate(long elapsedMillis) {
-        if (mCollisionType != CollisionType.NONE) {
+        if (mHitBox != null) {
             // Update collision bound position
             mHitBox.setCollisionBoundsPosition((int) getCenterX(), (int) getCenterY());
         }
@@ -119,8 +123,8 @@ public abstract class RectangleShape extends Shape implements Collidable {
     public boolean isCulling(Camera camera) {
         return camera.getWorldToScreenX(mX) > camera.getScreenWidth()
                 || camera.getWorldToScreenY(mY) > camera.getScreenHeight()
-                || camera.getWorldToScreenX(mX + mWidth) < 0
-                || camera.getWorldToScreenY(mY + mHeight) < 0;
+                || camera.getWorldToScreenX(getEndX()) < 0
+                || camera.getWorldToScreenY(getEndY()) < 0;
     }
 
     @Override
@@ -139,6 +143,13 @@ public abstract class RectangleShape extends Shape implements Collidable {
         if (mHitBox != null) {
             mHitBox.getCollisionBitmap().recycle();
         }
+    }
+    //========================================================
+
+    //--------------------------------------------------------
+    // Methods
+    //--------------------------------------------------------
+    public void onCollision(Collidable collidable) {
     }
     //========================================================
 

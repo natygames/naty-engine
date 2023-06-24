@@ -16,6 +16,6 @@ public interface Collidable {
 
     void setCollisionType(CollisionType collisionType);
 
-    void onCollision(Collidable collidable);
+    void collide(Collidable collidable);
 
 }
