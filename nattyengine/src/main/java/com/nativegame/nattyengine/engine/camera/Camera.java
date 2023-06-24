@@ -1,15 +1,11 @@
 package com.nativegame.nattyengine.engine.camera;
 
-import com.nativegame.nattyengine.ui.GameView;
-
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
 public class Camera {
 
-    private final int mScreenWidth;
-    private final int mScreenHeight;
     private final int mCameraWidth;
     private final int mCameraHeight;
     private final int mWorldWidth;
@@ -19,9 +15,10 @@ public class Camera {
     private final int mScreenCenterY;
     private final int mWorldCenterX;
     private final int mWorldCenterY;
-
     private final float mPixelFactor;
 
+    private int mScreenWidth;
+    private int mScreenHeight;
     private float mOffsetX;
     private float mOffsetY;
     private float mZoom = 1.0f;
@@ -31,13 +28,11 @@ public class Camera {
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    public Camera(GameView gameView, int cameraWidth, int cameraHeight, int worldWidth, int worldHeight) {
-        this(gameView, gameView.getWidth() / 2, gameView.getHeight() / 2, cameraWidth, cameraHeight, worldWidth, worldHeight);
+    public Camera(int cameraWidth, int cameraHeight, int worldWidth, int worldHeight) {
+        this(cameraWidth / 2, cameraHeight / 2, cameraWidth, cameraHeight, worldWidth, worldHeight);
     }
 
-    public Camera(GameView gameView, int centerX, int centerY, int cameraWidth, int cameraHeight, int worldWidth, int worldHeight) {
-        mScreenWidth = gameView.getWidth();
-        mScreenHeight = gameView.getHeight();
+    public Camera(int centerX, int centerY, int cameraWidth, int cameraHeight, int worldWidth, int worldHeight) {
         mCameraWidth = cameraWidth;
         mCameraHeight = cameraHeight;
         mWorldWidth = worldWidth;
@@ -119,6 +114,11 @@ public class Camera {
     //--------------------------------------------------------
     // Methods
     //--------------------------------------------------------
+    public void init(int screenWidth, int screenHeight) {
+        mScreenWidth = screenWidth;
+        mScreenHeight = screenHeight;
+    }
+
     public float getWorldToScreenX(float worldX) {
         return mScreenCenterX - (mWorldCenterX - worldX) * getPixelFactor();
     }

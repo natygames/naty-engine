@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import com.nativegame.nattyengine.engine.camera.Camera;
 import com.nativegame.nattyengine.engine.camera.CameraListener;
 import com.nativegame.nattyengine.engine.collision.Collidable;
-import com.nativegame.nattyengine.engine.collision.CollisionType;
 import com.nativegame.nattyengine.engine.collision.algorithm.QuadTree;
 import com.nativegame.nattyengine.engine.event.Event;
 import com.nativegame.nattyengine.engine.event.EventListener;
@@ -154,9 +153,11 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
 
         // Init the default Camera
         if (mCamera == null) {
-            mCamera = new Camera(mGameView, mGameView.getWidth(), mGameView.getHeight(),
+            mCamera = new Camera(mGameView.getWidth(), mGameView.getHeight(),
                     mGameView.getWidth(), mGameView.getHeight());
         }
+        // Init the screen area
+        mCamera.init(mGameView.getWidth(), mGameView.getHeight());
 
         // Init the collision area to world width and height
         mQuadTree.init(mCamera.getWorldWidth(), mCamera.getWorldHeight());
@@ -166,7 +167,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
             mTouchController = new SingleTouchController(mGameView);
         }
 
-        // Start sensor
+        // Start the input controller
         if (mTouchController != null) {
             mTouchController.start();
         }
@@ -308,7 +309,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         }
         if (updatable instanceof Collidable) {
             Collidable c = (Collidable) updatable;
-            if (c.getCollisionType() != CollisionType.NONE) {
+            if (c.getCollisionHitBox() != null) {
                 mQuadTree.addCollidable(c);
             }
         }
