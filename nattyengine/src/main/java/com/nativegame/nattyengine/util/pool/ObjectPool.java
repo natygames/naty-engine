@@ -10,6 +10,7 @@ import java.util.List;
 public class ObjectPool<T> implements Pool<T> {
 
     private final PoolObjectFactory<T> mFactory;
+    private final int mMinObject;
     private final int mMaxObject;
 
     private List<T> mObjects;
@@ -23,11 +24,12 @@ public class ObjectPool<T> implements Pool<T> {
 
     public ObjectPool(PoolObjectFactory<T> factory, int minObject, int maxObject) {
         mFactory = factory;
+        mMinObject = minObject;
         mMaxObject = maxObject;
         mObjects = new ArrayList<>(maxObject);
         // We add them to the pool now
         for (int i = 0; i < minObject; i++) {
-            mObjects.add(mFactory.createObject());
+            mObjects.add(factory.createObject());
         }
     }
     //========================================================
@@ -35,6 +37,16 @@ public class ObjectPool<T> implements Pool<T> {
     //--------------------------------------------------------
     // Overriding methods
     //--------------------------------------------------------
+    @Override
+    public int getMinObject() {
+        return mMinObject;
+    }
+
+    @Override
+    public int getMaxObject() {
+        return mMaxObject;
+    }
+
     @Override
     public T obtainObject() {
         if (!mObjects.isEmpty()) {

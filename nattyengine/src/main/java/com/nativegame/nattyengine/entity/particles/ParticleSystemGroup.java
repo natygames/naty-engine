@@ -352,6 +352,14 @@ public class ParticleSystemGroup {
         }
     }
 
+    public void oneShot(float x, float y) {
+        int size = mParticleSystems.size();
+        for (int i = 0; i < size; i++) {
+            ParticleSystem particleSystem = mParticleSystems.get(i);
+            particleSystem.oneShot(x, y);
+        }
+    }
+
     public void oneShot(float x, float y, int count) {
         int size = mParticleSystems.size();
         for (int i = 0; i < size; i++) {

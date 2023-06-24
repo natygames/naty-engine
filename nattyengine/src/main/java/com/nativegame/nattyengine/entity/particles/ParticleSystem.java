@@ -102,6 +102,14 @@ public class ParticleSystem extends Entity implements Modifier.ModifierListener 
         return this;
     }
 
+    public ParticleSystem setEmissionPosition(float x, float y) {
+        mEmissionMinX = x;
+        mEmissionMaxX = x;
+        mEmissionMinY = y;
+        mEmissionMaxY = y;
+        return this;
+    }
+
     public ParticleSystem setEmissionRangeX(float minX, float maxX) {
         mEmissionMinX = minX;
         mEmissionMaxX = maxX;
@@ -304,6 +312,10 @@ public class ParticleSystem extends Entity implements Modifier.ModifierListener 
         mTotalTime = 0;
     }
 
+    public void oneShot(float x, float y) {
+        oneShot(x, y, mParticlePool.getMaxObject());
+    }
+
     public void oneShot(float x, float y, int count) {
         for (int i = 0; i < count; i++) {
             addOneParticle(x, y);
@@ -318,7 +330,8 @@ public class ParticleSystem extends Entity implements Modifier.ModifierListener 
         Particle p = mParticlePool.obtainObject();
         int size = mInitializers.size();
         for (int i = 0; i < size; i++) {
-            mInitializers.get(i).initParticle(p);
+            ParticleInitializer initializer = mInitializers.get(i);
+            initializer.initParticle(p);
         }
         p.activate(x, y, mLayer, mModifiers);
     }

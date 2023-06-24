@@ -6,6 +6,10 @@ package com.nativegame.nattyengine.util.pool;
 
 public interface Pool<T> {
 
+    int getMinObject();
+
+    int getMaxObject();
+
     T obtainObject();
 
     void returnObject(T object);
