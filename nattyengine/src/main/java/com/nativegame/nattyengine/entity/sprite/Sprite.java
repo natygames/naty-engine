@@ -51,6 +51,9 @@ public class Sprite extends RectangleShape {
 
     public void setTexture(Texture texture) {
         mTexture = texture;
+        resetSize();
+        resetScalePivot();
+        resetRotationPivot();
     }
 
     public float getScaleX() {
