@@ -39,6 +39,16 @@ public abstract class RunnableEntity extends Entity implements Runnable {
     // Overriding methods
     //--------------------------------------------------------
     @Override
+    public void removeFromGame() {
+        super.removeFromGame();
+        if (mIsPostRunnable) {
+            mActivity.runOnUiThread(this);
+            mIsPostRunnable = false;
+            // Important to post the Runnable before removed, or it may not being called
+        }
+    }
+
+    @Override
     public void onPostUpdate(long elapsedMillis) {
         if (mIsPostRunnable) {
             mActivity.runOnUiThread(this);
