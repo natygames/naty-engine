@@ -2,52 +2,23 @@ package com.nativegame.nattyengine.entity;
 
 import android.graphics.Canvas;
 
-import com.nativegame.nattyengine.engine.Drawable;
 import com.nativegame.nattyengine.engine.Engine;
-import com.nativegame.nattyengine.engine.camera.Camera;
-import com.nativegame.nattyengine.engine.camera.CameraListener;
+import com.nativegame.nattyengine.camera.Camera;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public abstract class ScreenEntity extends Entity implements Drawable, CameraListener {
+public abstract class ScreenEntity extends Entity implements Drawable {
 
-    protected final float mPixelFactor;
-
-    protected float mX;
-    protected float mY;
     protected int mLayer;
     private boolean mIsVisible = true;
 
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    protected ScreenEntity(Engine engine, float x, float y) {
+    protected ScreenEntity(Engine engine) {
         super(engine);
-        mPixelFactor = engine.getCamera().getPixelFactor();
-        mX = x;
-        mY = y;
-    }
-    //========================================================
-
-    //--------------------------------------------------------
-    // Getter and Setter
-    //--------------------------------------------------------
-    public float getX() {
-        return mX;
-    }
-
-    public void setX(float x) {
-        mX = x;
-    }
-
-    public float getY() {
-        return mY;
-    }
-
-    public void setY(float y) {
-        mY = y;
     }
     //========================================================
 
@@ -86,23 +57,17 @@ public abstract class ScreenEntity extends Entity implements Drawable, CameraLis
         super.reset();
         mIsVisible = true;
     }
-
-    @Override
-    public void setCameraOffset(float offsetX, float offsetY) {
-        mX += offsetX;
-        mY += offsetY;
-    }
     //========================================================
 
     //--------------------------------------------------------
     // Methods
     //--------------------------------------------------------
-    public void onPreDraw(Canvas canvas, Camera camera) {
+    protected void onPreDraw(Canvas canvas, Camera camera) {
     }
 
-    public abstract void onDraw(Canvas canvas, Camera camera);
+    protected abstract void onDraw(Canvas canvas, Camera camera);
 
-    public void onPostDraw(Canvas canvas, Camera camera) {
+    protected void onPostDraw(Canvas canvas, Camera camera) {
     }
     //========================================================
 

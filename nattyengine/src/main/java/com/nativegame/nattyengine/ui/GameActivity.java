@@ -1,5 +1,6 @@
 package com.nativegame.nattyengine.ui;
 
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.View;
 
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.nativegame.nattyengine.audio.music.MusicManager;
 import com.nativegame.nattyengine.audio.sound.SoundManager;
+import com.nativegame.nattyengine.engine.Engine;
 import com.nativegame.nattyengine.texture.texture2d.Texture2DManager;
 
 import java.util.Stack;
@@ -19,16 +21,21 @@ public class GameActivity extends AppCompatActivity {
 
     private static final String FRAGMENT_TAG = "content";
 
+    private Engine mEngine;
     private MusicManager mMusicManager;
     private SoundManager mSoundManager;
-    private Texture2DManager mTexture2DManager;
-    private int mContainerViewId;
+    private Texture2DManager mTextureManager;
+    private int mFragmentContainerId;
 
     private final Stack<GameDialog> mDialogStack = new Stack<>();
 
     //--------------------------------------------------------
     // Getter and Setter
     //--------------------------------------------------------
+    public Engine getEngine() {
+        return mEngine;
+    }
+
     public MusicManager getMusicManager() {
         return mMusicManager;
     }
@@ -38,29 +45,17 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public Texture2DManager getTextureManager() {
-        return mTexture2DManager;
+        return mTextureManager;
     }
 
-    protected void setContainerView(int containerViewId) {
-        mContainerViewId = containerViewId;
+    public void setFragmentContainer(int fragmentContainerId) {
+        mFragmentContainerId = fragmentContainerId;
     }
     //========================================================
 
     //--------------------------------------------------------
     // Overriding methods
     //--------------------------------------------------------
-    @Override
-    protected void onStart() {
-        super.onStart();
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    }
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -74,12 +69,25 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setVolumeControlStream(android.media.AudioManager.STREAM_MUSIC);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        mEngine = new Engine();
         mMusicManager = new MusicManager(this);
         mSoundManager = new SoundManager(this);
-        mTexture2DManager = new Texture2DManager(this);
+        mTextureManager = new Texture2DManager(this);
     }
 
     @Override
@@ -101,7 +109,7 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
         mMusicManager.release();
         mSoundManager.release();
-        mTexture2DManager.release();
+        mTextureManager.release();
     }
 
     @Override
@@ -129,7 +137,7 @@ public class GameActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(enterAnimationId, exitAnimationId, enterAnimationId, exitAnimationId)
-                .replace(mContainerViewId, fragment, FRAGMENT_TAG)
+                .replace(mFragmentContainerId, fragment, FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
     }

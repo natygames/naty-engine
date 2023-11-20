@@ -41,7 +41,7 @@ public abstract class BaseLoop extends Thread implements Loop {
                 }
                 currentTimeMillis = System.currentTimeMillis();
             }
-            updateLoop(elapsedTimeMillis);
+            onUpdateLoop(elapsedTimeMillis);
             previousTimeMillis = currentTimeMillis;
         }
     }
@@ -83,6 +83,12 @@ public abstract class BaseLoop extends Thread implements Loop {
     public boolean isPaused() {
         return mIsPause;
     }
+    //========================================================
+
+    //--------------------------------------------------------
+    // Methods
+    //--------------------------------------------------------
+    protected abstract void onUpdateLoop(long elapsedMillis);
     //========================================================
 
 }

@@ -32,7 +32,7 @@ public class UpdateLoop extends BaseLoop {
     // Overriding methods
     //--------------------------------------------------------
     @Override
-    public void updateLoop(long elapsedMillis) {
+    public void onUpdateLoop(long elapsedMillis) {
         mListener.update(elapsedMillis);
     }
     //========================================================

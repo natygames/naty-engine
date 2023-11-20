@@ -14,8 +14,6 @@ public interface Loop {
 
     void resumeLoop();
 
-    void updateLoop(long elapsedMillis);
-
     boolean isRunning();
 
     boolean isPaused();

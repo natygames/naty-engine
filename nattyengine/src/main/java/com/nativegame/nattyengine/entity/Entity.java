@@ -1,21 +1,19 @@
 package com.nativegame.nattyengine.entity;
 
-import com.nativegame.nattyengine.engine.Disposable;
 import com.nativegame.nattyengine.engine.Engine;
-import com.nativegame.nattyengine.engine.Updatable;
-import com.nativegame.nattyengine.engine.event.Event;
+import com.nativegame.nattyengine.event.Event;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public abstract class Entity implements Updatable, Disposable {
+public abstract class Entity implements Updatable, Releasable {
 
     protected final Engine mEngine;
 
     private boolean mIsRunning = false;
     private boolean mIsActive = true;
-    private boolean mIsDisposed = false;
+    private boolean mIsRelease = false;
 
     //--------------------------------------------------------
     // Constructors
@@ -50,13 +48,25 @@ public abstract class Entity implements Updatable, Disposable {
 
     @Override
     public void addToGame() {
-        mEngine.addUpdatable(this);
+        mEngine.addToEngine(this);
         onStart();
     }
 
     @Override
     public void removeFromGame() {
-        mEngine.removeUpdatable(this);
+        mEngine.removeFromEngine(this);
+        onRemove();
+    }
+
+    @Override
+    public void addToScene() {
+        mEngine.addToScene(this);
+        onStart();
+    }
+
+    @Override
+    public void removeFromScene() {
+        mEngine.removeFromScene(this);
         onRemove();
     }
 
@@ -73,32 +83,41 @@ public abstract class Entity implements Updatable, Disposable {
     }
 
     @Override
-    public void dispose() {
-        mIsDisposed = true;
+    public void release() {
+        mIsRelease = true;
+        onRelease();
     }
 
     @Override
-    public boolean isDisposed() {
-        return mIsDisposed;
+    public boolean isRelease() {
+        return mIsRelease;
+    }
+
+    @Override
+    public String getName() {
+        return getClass().getSimpleName();
     }
     //========================================================
 
     //--------------------------------------------------------
     // Methods
     //--------------------------------------------------------
-    public void onStart() {
+    protected void onStart() {
     }
 
-    public void onRemove() {
+    protected void onRemove() {
     }
 
-    public void onPreUpdate(long elapsedMillis) {
+    protected void onRelease() {
     }
 
-    public void onUpdate(long elapsedMillis) {
+    protected void onPreUpdate(long elapsedMillis) {
     }
 
-    public void onPostUpdate(long elapsedMillis) {
+    protected void onUpdate(long elapsedMillis) {
+    }
+
+    protected void onPostUpdate(long elapsedMillis) {
     }
 
     public void dispatchEvent(Event event) {

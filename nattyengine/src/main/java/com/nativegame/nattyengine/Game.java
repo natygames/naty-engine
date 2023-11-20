@@ -1,8 +1,6 @@
 package com.nativegame.nattyengine;
 
 import com.nativegame.nattyengine.engine.Engine;
-import com.nativegame.nattyengine.input.sensor.AccelerationController;
-import com.nativegame.nattyengine.input.sensor.OrientationController;
 import com.nativegame.nattyengine.ui.GameActivity;
 import com.nativegame.nattyengine.ui.GameView;
 
@@ -36,15 +34,18 @@ import com.nativegame.nattyengine.ui.GameView;
 
 public class Game {
 
-    protected final GameActivity mActivity;
-    protected final Engine mEngine;
+    private final GameActivity mActivity;
+    private final GameView mGameView;
+    private final Engine mEngine;
 
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    public Game(GameActivity activity, GameView gameView) {
+    public Game(GameActivity activity, GameView gameView, Engine engine) {
         mActivity = activity;
-        mEngine = new Engine(gameView);
+        mGameView = gameView;
+        mEngine = engine;
+        mEngine.setGameView(gameView);
     }
     //========================================================
 
@@ -53,6 +54,10 @@ public class Game {
     //--------------------------------------------------------
     public GameActivity getActivity() {
         return mActivity;
+    }
+
+    public GameView getGameView() {
+        return mGameView;
     }
 
     public Engine getEngine() {
@@ -64,14 +69,16 @@ public class Game {
     // Methods
     //--------------------------------------------------------
     public final void start() {
-        mEngine.startGame();
-        onStart();
+        if (!mEngine.isRunning()) {
+            mEngine.startGame();
+            onStart();
+        }
     }
 
     public final void stop() {
         if (mEngine.isRunning()) {
             mEngine.stopGame();
-            mEngine.disposeGame();
+            mEngine.releaseGame();
             onStop();
         }
     }
@@ -100,28 +107,6 @@ public class Game {
     }
 
     protected void onResume() {
-    }
-
-    public void enableAccelerationSensor() {
-        mEngine.setAccelerationController(new AccelerationController(mActivity));
-    }
-
-    public void disableAccelerationSensor() {
-        if (mEngine.getAccelerationController() != null) {
-            mEngine.getAccelerationController().stop();
-        }
-        mEngine.setAccelerationController(null);
-    }
-
-    public void enableOrientationSensor() {
-        mEngine.setOrientationController(new OrientationController(mActivity));
-    }
-
-    public void disableOrientationSensor() {
-        if (mEngine.getOrientationController() != null) {
-            mEngine.getOrientationController().stop();
-        }
-        mEngine.setOrientationController(null);
     }
     //========================================================
 

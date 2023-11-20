@@ -4,6 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/User/AndroidStudioProjects/NattyEngine/app/src/main/res/layout/activity_main.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NattyEngine/app/src/main/res/layout/fragment_blank.xml" value="0.1403985507246377" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NattyEngine/app/src/main/res/layout/fragment_camera_example.xml" value="0.1403985507246377" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NattyEngine/app/src/main/res/layout/fragment_example.xml" value="0.1403985507246377" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NattyEngine/app/src/main/res/layout/fragment_menu.xml" value="0.1403985507246377" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NattyEngine/app/src/main/res/layout/view_example.xml" value="0.1403985507246377" />
       </map>
     </option>
   </component>

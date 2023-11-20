@@ -42,7 +42,7 @@ public class GameFragment extends Fragment {
                 ViewTreeObserver viewTreeObserver = view.getViewTreeObserver();
                 if (viewTreeObserver.isAlive()) {
                     viewTreeObserver.removeOnGlobalLayoutListener(this);
-                    onLayoutCreated(view);
+                    onViewCreated(view);
                 }
             }
         });
@@ -52,15 +52,11 @@ public class GameFragment extends Fragment {
     //--------------------------------------------------------
     // Methods
     //--------------------------------------------------------
-    protected void onLayoutCreated(View view) {
+    protected void onViewCreated(View view) {
     }
 
     public boolean onBackPressed() {
         return false;
-    }
-
-    public void showDialog(GameDialog newDialog) {
-        getGameActivity().showDialog(newDialog);
     }
     //========================================================
 

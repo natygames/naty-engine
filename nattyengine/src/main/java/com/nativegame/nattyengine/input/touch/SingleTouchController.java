@@ -50,11 +50,11 @@ public class SingleTouchController extends BaseTouchController {
     @Override
     public List<TouchEvent> getTouchEvents() {
         synchronized (this) {
-            int size = mTouchEvents.size();
-            for (int i = 0; i < size; i++) {
+            // Remove previous event and add new event
+            int eventCount = mTouchEvents.size();
+            for (int i = 0; i < eventCount; i++) {
                 mTouchEventPool.returnObject(mTouchEvents.get(i));
             }
-            // Remove previous event and add new event
             mTouchEvents.clear();
             mTouchEvents.addAll(mTouchEventsBuffer);
             mTouchEventsBuffer.clear();

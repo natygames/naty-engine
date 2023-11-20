@@ -2,8 +2,8 @@ package com.nativegame.nattyengine.input.touch;
 
 import android.view.View;
 
-import com.nativegame.nattyengine.util.pool.ObjectPool;
 import com.nativegame.nattyengine.util.pool.Pool;
+import com.nativegame.nattyengine.util.pool.SafeFixedObjectPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,14 @@ import java.util.List;
 
 public abstract class BaseTouchController implements TouchController {
 
-    protected final Pool<TouchEvent> mTouchEventPool;
-
     protected boolean mIsEnable = false;
 
+    protected final Pool<TouchEvent> mTouchEventPool = new SafeFixedObjectPool<>(new Pool.PoolObjectFactory<TouchEvent>() {
+        @Override
+        public TouchEvent createObject() {
+            return new TouchEvent();
+        }
+    }, 100);
     protected final List<TouchEvent> mTouchEvents = new ArrayList<>();
     protected final List<TouchEvent> mTouchEventsBuffer = new ArrayList<>();
 
@@ -25,12 +29,6 @@ public abstract class BaseTouchController implements TouchController {
     // Constructors
     //--------------------------------------------------------
     protected BaseTouchController(View view) {
-        mTouchEventPool = new ObjectPool<>(new Pool.PoolObjectFactory<TouchEvent>() {
-            @Override
-            public TouchEvent createObject() {
-                return new TouchEvent();
-            }
-        }, 100);
         view.setOnTouchListener(this);
     }
     //========================================================

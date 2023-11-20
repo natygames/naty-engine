@@ -12,46 +12,30 @@ import java.util.List;
 
 public class Timer extends Entity {
 
-    private TimerListener mListener;
-    private long mPeriod;
+    private int mEventCount;
+    private long mTotalEventTime;
     private long mTotalTime;
-    private boolean mIsLooping = false;
+    private boolean mIsLooping;
+    private boolean mIsTimerRunning = false;
 
-    private final List<TimerEvent> mTimerEvents = new ArrayList<>();
+    private final List<TimerEvent> mEvents = new ArrayList<>();
 
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    public Timer(Engine engine, TimerListener listener) {
-        this(engine, listener, 0);
+    public Timer(Engine engine) {
+        this(engine, false);
     }
 
-    public Timer(Engine engine, TimerListener listener, long period) {
+    public Timer(Engine engine, boolean isLooping) {
         super(engine);
-        mListener = listener;
-        mPeriod = period;
+        mIsLooping = isLooping;
     }
     //========================================================
 
     //--------------------------------------------------------
     // Getter and Setter
     //--------------------------------------------------------
-    public TimerListener getListener() {
-        return mListener;
-    }
-
-    public void setListener(TimerListener listener) {
-        mListener = listener;
-    }
-
-    public long getPeriod() {
-        return mPeriod;
-    }
-
-    public void setPeriod(long period) {
-        mPeriod = period;
-    }
-
     public boolean isLooping() {
         return mIsLooping;
     }
@@ -66,29 +50,41 @@ public class Timer extends Entity {
     //--------------------------------------------------------
     @Override
     public void onUpdate(long elapsedMillis) {
+        if (!mIsTimerRunning) {
+            return;
+        }
         mTotalTime += elapsedMillis;
+
         // Dispatch timer event
-        int size = mTimerEvents.size();
-        for (int i = 0; i < size; i++) {
-            TimerEvent event = mTimerEvents.get(i);
+        int eventCount = mEvents.size();
+        for (int i = 0; i < eventCount; i++) {
+            TimerEvent event = mEvents.get(i);
+            // Dispatch one event if time passed
             if (!event.isTimerEventDispatch() && mTotalTime >= event.getEventTime()) {
                 event.dispatchTimerEvent();
+                mEventCount--;
             }
         }
-        // Check is time passed
-        if (mTotalTime >= mPeriod) {
-            if (!mIsLooping) {
-                removeFromGame();
+
+        // Check is total time passed
+        if (mEventCount <= 0) {
+            if (mIsLooping) {
+                mTotalTime = mTotalTime % mTotalEventTime;
+                // Reset event state
+                for (int i = 0; i < mEventCount; i++) {
+                    TimerEvent event = mEvents.get(i);
+                    event.resetTimerEvent();
+                }
+            } else {
+                stopTimer();
             }
-            mListener.onTimerComplete(this);
-            mTotalTime = 0;
         }
     }
 
     @Override
     public void reset() {
         super.reset();
-        cancelTimer();
+        stopTimer();
         clearTimerEvent();
     }
     //========================================================
@@ -97,44 +93,55 @@ public class Timer extends Entity {
     // Methods
     //--------------------------------------------------------
     public void startTimer() {
-        // Reset event state
-        int size = mTimerEvents.size();
-        for (int i = 0; i < size; i++) {
-            TimerEvent event = mTimerEvents.get(i);
-            event.resetTimerEvent();
-        }
+        mIsTimerRunning = true;
+        resetTimer();
         addToGame();
-        mTotalTime = 0;
     }
 
-    public void cancelTimer() {
+    public void stopTimer() {
         // Check has timer been started yet
         if (isRunning()) {
             removeFromGame();
         }
+        mIsTimerRunning = false;
+        mEventCount = 0;
+        mTotalEventTime = 0;
         mTotalTime = 0;
+        System.out.println("end");
+    }
+
+    public void pauseTimer() {
+        mIsTimerRunning = false;
+    }
+
+    public void resumeTimer() {
+        mIsTimerRunning = true;
+    }
+
+    public void resetTimer() {
+        mEventCount = mEvents.size();
+        mTotalEventTime = 0;
+        mTotalTime = 0;
+        // Reset event state
+        for (int i = 0; i < mEventCount; i++) {
+            TimerEvent event = mEvents.get(i);
+            event.resetTimerEvent();
+            if (event.getEventTime() > mTotalEventTime) {
+                mTotalEventTime = event.getEventTime();
+            }
+        }
     }
 
     public void addTimerEvent(TimerEvent event) {
-        mTimerEvents.add(event);
+        mEvents.add(event);
     }
 
     public void removeTimerEvent(TimerEvent event) {
-        mTimerEvents.remove(event);
+        mEvents.remove(event);
     }
 
     public void clearTimerEvent() {
-        mTimerEvents.clear();
-    }
-    //========================================================
-
-    //--------------------------------------------------------
-    // Inner Classes
-    //--------------------------------------------------------
-    public interface TimerListener {
-
-        void onTimerComplete(Timer timer);
-
+        mEvents.clear();
     }
     //========================================================
 

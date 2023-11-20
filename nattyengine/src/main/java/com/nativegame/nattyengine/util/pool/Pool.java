@@ -1,14 +1,18 @@
 package com.nativegame.nattyengine.util.pool;
 
+import java.util.List;
+
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
 public interface Pool<T> {
 
-    int getMinObject();
+    PoolObjectFactory<T> getFactory();
 
-    int getMaxObject();
+    List<T> getAllObjects();
+
+    int getObjectCount();
 
     T obtainObject();
 

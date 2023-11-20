@@ -2,21 +2,25 @@ package com.nativegame.nattyengine.engine;
 
 import android.graphics.Canvas;
 
-import com.nativegame.nattyengine.engine.camera.Camera;
-import com.nativegame.nattyengine.engine.camera.CameraListener;
-import com.nativegame.nattyengine.engine.collision.Collidable;
-import com.nativegame.nattyengine.engine.collision.algorithm.QuadTree;
-import com.nativegame.nattyengine.engine.event.Event;
-import com.nativegame.nattyengine.engine.event.EventListener;
+import com.nativegame.nattyengine.camera.Camera;
 import com.nativegame.nattyengine.engine.loop.DrawLoop;
 import com.nativegame.nattyengine.engine.loop.UpdateLoop;
+import com.nativegame.nattyengine.entity.Drawable;
+import com.nativegame.nattyengine.entity.Releasable;
+import com.nativegame.nattyengine.entity.Updatable;
+import com.nativegame.nattyengine.event.Event;
+import com.nativegame.nattyengine.event.EventListener;
 import com.nativegame.nattyengine.input.sensor.AccelerationController;
 import com.nativegame.nattyengine.input.sensor.OrientationController;
-import com.nativegame.nattyengine.input.touch.SingleTouchController;
+import com.nativegame.nattyengine.input.touch.BoundTouchEventListener;
 import com.nativegame.nattyengine.input.touch.TouchController;
 import com.nativegame.nattyengine.input.touch.TouchEvent;
 import com.nativegame.nattyengine.input.touch.TouchEventListener;
+import com.nativegame.nattyengine.scene.Scene;
+import com.nativegame.nattyengine.scene.SceneController;
 import com.nativegame.nattyengine.ui.GameView;
+import com.nativegame.nattyengine.util.debug.Debugger;
+import com.nativegame.nattyengine.util.exception.EngineRuntimeException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,40 +33,57 @@ import java.util.List;
 
 public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener, GameView.OnDrawListener {
 
-    private final GameView mGameView;
-
+    private GameView mGameView;
+    private Camera mCamera;
     private UpdateLoop mUpdateLoop;
     private DrawLoop mDrawLoop;
-    private Camera mCamera;
     private TouchController mTouchController;
     private AccelerationController mAccelerationController;
     private OrientationController mOrientationController;
+    private boolean mIsDebugMode = false;
 
-    private final QuadTree mQuadTree = new QuadTree();
+    private final SceneController mSceneController = new SceneController();
+    private final LayerComparator mLayerComparator = new LayerComparator();
+    private final Debugger mDebugger = new Debugger();
     private final List<Updatable> mUpdatables = new ArrayList<>();
     private final List<Drawable> mDrawables = new ArrayList<>();
     private final List<Updatable> mUpdatablesToAdd = new ArrayList<>();
     private final List<Updatable> mUpdatablesToRemove = new ArrayList<>();
-    private final LayerComparator mLayerComparator = new LayerComparator();
+    private final List<EngineListener> mListeners = new ArrayList<>();
 
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
+    public Engine() {
+    }
+
     public Engine(GameView gameView) {
-        mGameView = gameView;
-        mGameView.setListener(this);
+        setGameView(gameView);
     }
     //========================================================
 
     //--------------------------------------------------------
     // Getter and Setter
     //--------------------------------------------------------
+    public GameView getGameView() {
+        return mGameView;
+    }
+
+    public void setGameView(GameView gameView) {
+        mGameView = gameView;
+        mGameView.setListener(this);
+    }
+
     public Camera getCamera() {
         return mCamera;
     }
 
     public void setCamera(Camera camera) {
         mCamera = camera;
+    }
+
+    public SceneController getSceneController() {
+        return mSceneController;
     }
 
     public TouchController getTouchController() {
@@ -89,6 +110,22 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         mOrientationController = orientationController;
     }
 
+    public boolean isDebugMode() {
+        return mIsDebugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        mIsDebugMode = debugMode;
+    }
+
+    public Debugger getDebugger() {
+        return mDebugger;
+    }
+
+    public void setDebugger(Debugger debugger) {
+        mDebugger.set(debugger);
+    }
+
     public boolean isRunning() {
         return mUpdateLoop != null && mUpdateLoop.isRunning();
     }
@@ -104,28 +141,36 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
     @Override
     public void update(long elapsedMillis) {
         processInput();
-        int size = mUpdatables.size();
-        for (int i = 0; i < size; i++) {
-            Updatable u = mUpdatables.get(i);
-            if (u.isActive() && u.isRunning()) {
-                u.update(elapsedMillis);
+        synchronized (mUpdatables) {
+            int updatableCount = mUpdatables.size();
+            for (int i = 0; i < updatableCount; i++) {
+                Updatable u = mUpdatables.get(i);
+                if (u.isActive() && u.isRunning()) {
+                    u.update(elapsedMillis);
+                }
             }
         }
-        focusCamera();
-        checkCollision();
+        mCamera.update(elapsedMillis);
+        int listenerCount = mListeners.size();
+        for (int i = 0; i < listenerCount; i++) {
+            EngineListener listener = mListeners.get(i);
+            listener.onEngineUpdate(elapsedMillis);
+        }
         synchronized (mDrawables) {
             while (!mUpdatablesToRemove.isEmpty()) {
-                removeFromEngine(mUpdatablesToRemove.remove(0));
+                removeUpdatable(mUpdatablesToRemove.remove(0));
             }
             while (!mUpdatablesToAdd.isEmpty()) {
-                addToEngine(mUpdatablesToAdd.remove(0));
+                addUpdatable(mUpdatablesToAdd.remove(0));
             }
         }
     }
 
     @Override
     public void draw() {
-        mGameView.draw();
+        if (mGameView != null) {
+            mGameView.draw();
+        }
     }
 
     @Override
@@ -133,13 +178,18 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         synchronized (mDrawables) {
             // Sort drawables by layer
             Collections.sort(mDrawables, mLayerComparator);
-            int size = mDrawables.size();
-            for (int i = 0; i < size; i++) {
+            int drawableCount = mDrawables.size();
+            for (int i = 0; i < drawableCount; i++) {
                 Drawable d = mDrawables.get(i);
-                if (d.isVisible() && !d.isCulling(mCamera)) {
+                if (d.isVisible() && !d.isCulling(canvas, mCamera)) {
                     d.draw(canvas, mCamera);
                 }
             }
+        }
+        int listenerCount = mListeners.size();
+        for (int i = 0; i < listenerCount; i++) {
+            EngineListener listener = mListeners.get(i);
+            listener.onEngineDraw(canvas, mCamera);
         }
     }
     //========================================================
@@ -148,24 +198,14 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
     // Methods
     //--------------------------------------------------------
     public void startGame() {
-        // Stop the engine if it is running
-        stopGame();
-
-        // Init the default Camera
+        if (mGameView == null) {
+            throw new EngineRuntimeException("GameView not found!");
+        }
         if (mCamera == null) {
-            mCamera = new Camera(mGameView.getWidth(), mGameView.getHeight(),
-                    mGameView.getWidth(), mGameView.getHeight());
+            throw new EngineRuntimeException("Camera not found!");
         }
-        // Init the screen area
-        mCamera.init(mGameView.getWidth(), mGameView.getHeight());
 
-        // Init the collision area to world width and height
-        mQuadTree.init(mCamera.getWorldWidth(), mCamera.getWorldHeight());
-
-        // Init the default TouchController
-        if (mTouchController == null) {
-            mTouchController = new SingleTouchController(mGameView);
-        }
+        mSceneController.start();
 
         // Start the input controller
         if (mTouchController != null) {
@@ -188,6 +228,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
     }
 
     public void stopGame() {
+        mSceneController.stop();
         if (mUpdateLoop != null) {
             mUpdateLoop.stopLoop();
             mUpdateLoop = null;
@@ -198,16 +239,20 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         }
         if (mTouchController != null) {
             mTouchController.stop();
+            mTouchController = null;
         }
         if (mAccelerationController != null) {
             mAccelerationController.stop();
+            mAccelerationController = null;
         }
         if (mOrientationController != null) {
             mOrientationController.stop();
+            mOrientationController = null;
         }
     }
 
     public void pauseGame() {
+        mSceneController.pause();
         if (mUpdateLoop != null) {
             mUpdateLoop.pauseLoop();
         }
@@ -226,6 +271,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
     }
 
     public void resumeGame() {
+        mSceneController.resume();
         if (mUpdateLoop != null) {
             mUpdateLoop.resumeLoop();
         }
@@ -243,104 +289,110 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         }
     }
 
-    public void disposeGame() {
-        int size = mUpdatables.size();
-        for (int i = 0; i < size; i++) {
-            Updatable u = mUpdatables.get(i);
-            if (u instanceof Disposable) {
-                Disposable d = (Disposable) u;
-                if (!d.isDisposed()) {
-                    d.dispose();
+    public void releaseGame() {
+        synchronized (mUpdatables) {
+            int updatableCount = mUpdatables.size();
+            for (int i = updatableCount - 1; i >= 0; i--) {
+                Updatable u = mUpdatables.get(i);
+                u.removeFromGame();
+                if (u instanceof Releasable) {
+                    Releasable r = (Releasable) u;
+                    if (!r.isRelease()) {
+                        r.release();
+                    }
                 }
             }
         }
     }
 
     private void processInput() {
+        if (mTouchController == null) {
+            return;
+        }
         List<TouchEvent> touchEvents = mTouchController.getTouchEvents();
         if (touchEvents.isEmpty()) {
             return;
         }
-        // We notify all the TouchEventListener
-        int size = mUpdatables.size();
-        for (int i = 0; i < size; i++) {
+        // We notify all the listener
+        int updatableCount = mUpdatables.size();
+        for (int i = 0; i < updatableCount; i++) {
             Updatable u = mUpdatables.get(i);
+
+            // Check is TouchEventListener
             if (u instanceof TouchEventListener) {
                 TouchEventListener listener = ((TouchEventListener) u);
                 // Consume TouchEvent
-                int sizeEvent = touchEvents.size();
-                for (int j = 0; j < sizeEvent; j++) {
+                int touchEventCount = touchEvents.size();
+                for (int j = 0; j < touchEventCount; j++) {
                     TouchEvent event = touchEvents.get(j);
                     // Transform screen coordinate to world coordinate
                     listener.onTouchEvent(event.getType(),
-                            mCamera.getScreenToWorldX(event.getTouchX()),
-                            mCamera.getScreenToWorldY(event.getTouchY()));
+                            mCamera.getScreenToWorldX(event.getTouchX(), listener.getCoordinateType()),
+                            mCamera.getScreenToWorldY(event.getTouchY(), listener.getCoordinateType()));
+                }
+            }
+
+            // Check is BoundTouchEventListener
+            if (u instanceof BoundTouchEventListener) {
+                BoundTouchEventListener listener = ((BoundTouchEventListener) u);
+                // Consume TouchEvent
+                int touchEventCount = touchEvents.size();
+                for (int j = 0; j < touchEventCount; j++) {
+                    TouchEvent event = touchEvents.get(j);
+                    // Transform screen coordinate to world coordinate
+                    float touchX = mCamera.getScreenToWorldX(event.getTouchX(), listener.getCoordinateType());
+                    float touchY = mCamera.getScreenToWorldY(event.getTouchY(), listener.getCoordinateType());
+                    // Check is in bounds
+                    if (touchX > listener.getX() && touchX < listener.getEndX()
+                            && touchY > listener.getY() && touchY < listener.getEndY()) {
+                        listener.onAreaTouchEvent(event.getType(), touchX - listener.getX(),
+                                touchY - listener.getY());
+                    }
                 }
             }
         }
     }
 
-    private void focusCamera() {
-        // Check is camera has focus
-        if (!mCamera.isFocus()) {
-            return;
-        }
-        float offsetX = mCamera.getOffsetX();
-        float offsetY = mCamera.getOffsetY();
-
-        int size = mUpdatables.size();
-        for (int i = 0; i < size; i++) {
-            Updatable u = mUpdatables.get(i);
-            if (u instanceof CameraListener) {
-                CameraListener listener = ((CameraListener) u);
-                listener.setCameraOffset(offsetX, offsetY);
-            }
-        }
-    }
-
-    private void checkCollision() {
-        mQuadTree.checkCollision(this);
-    }
-
-    private void addToEngine(Updatable updatable) {
+    private void addUpdatable(Updatable updatable) {
         mUpdatables.add(updatable);
         if (updatable instanceof Drawable) {
             mDrawables.add((Drawable) updatable);
         }
-        if (updatable instanceof Collidable) {
-            Collidable c = (Collidable) updatable;
-            if (c.getCollisionHitBox() != null) {
-                mQuadTree.addCollidable(c);
-            }
+        int listenerCount = mListeners.size();
+        for (int i = 0; i < listenerCount; i++) {
+            EngineListener listener = mListeners.get(i);
+            listener.onAddToEngine(updatable);
         }
     }
 
-    private void removeFromEngine(Updatable updatable) {
+    private void removeUpdatable(Updatable updatable) {
         mUpdatables.remove(updatable);
         if (updatable instanceof Drawable) {
             mDrawables.remove((Drawable) updatable);
         }
-        if (updatable instanceof Collidable) {
-            mQuadTree.removeCollidable((Collidable) updatable);
+        int listenerCount = mListeners.size();
+        for (int i = 0; i < listenerCount; i++) {
+            EngineListener listener = mListeners.get(i);
+            listener.onRemoveFromEngine(updatable);
         }
     }
 
-    public void addUpdatable(Updatable updatable) {
+    public void addToEngine(Updatable updatable) {
         if (updatable.isRunning()) {
-            throw new IllegalStateException("'" + updatable.getClass().getSimpleName() + "' is already in the engine!");
+            throw new EngineRuntimeException("'" + updatable.getName() + "' is already in the engine!");
         }
         updatable.setRunning(true);
         // Add to buffer if engine is running
         if (isRunning()) {
             mUpdatablesToAdd.add(updatable);
         } else {
-            addToEngine(updatable);
+            addUpdatable(updatable);
         }
     }
 
-    public void removeUpdatable(Updatable updatable) {
+    public void removeFromEngine(Updatable updatable) {
         if (!updatable.isRunning()) {
-            throw new IllegalStateException("'" + updatable.getClass().getSimpleName() + "' is not in the engine!");
+            throw new EngineRuntimeException("'" + updatable.getName() + "' is not in the engine!");
         }
         updatable.setRunning(false);
         // Add to buffer if engine is running
@@ -351,15 +403,53 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
                 mUpdatablesToRemove.add(updatable);
             }
         } else {
-            removeFromEngine(updatable);
+            removeUpdatable(updatable);
         }
+    }
+
+    public void addToScene(Updatable updatable) {
+        addToEngine(updatable);
+        Scene scene = mSceneController.getCurrentScene();
+        if (scene == null) {
+            throw new EngineRuntimeException("Scene not found!");
+        }
+        if (scene.getAllChild().contains(updatable)) {
+            throw new EngineRuntimeException("'" + updatable.getName()
+                    + "' is already in the scene '" + scene.getName() + "'!");
+        }
+        scene.addToScene(updatable);
+    }
+
+    public void removeFromScene(Updatable updatable) {
+        removeFromEngine(updatable);
+        Scene scene = mSceneController.getCurrentScene();
+        if (scene == null) {
+            throw new EngineRuntimeException("Scene not found!");
+        }
+        if (!scene.getAllChild().contains(updatable)) {
+            throw new EngineRuntimeException("'" + updatable.getName()
+                    + "' is not in the scene '" + scene.getName() + "'!");
+        }
+        scene.removeFromScene(updatable);
+    }
+
+    public void addListener(EngineListener listener) {
+        mListeners.add(listener);
+    }
+
+    public void removeListener(EngineListener listener) {
+        mListeners.remove(listener);
+    }
+
+    public void clearListener() {
+        mListeners.clear();
     }
 
     public void dispatchEvent(Event event) {
         synchronized (mDrawables) {
             // We notify all the EventListener
-            int size = mUpdatables.size();
-            for (int i = 0; i < size; i++) {
+            int updatableCount = mUpdatables.size();
+            for (int i = 0; i < updatableCount; i++) {
                 Updatable u = mUpdatables.get(i);
                 if (u instanceof EventListener) {
                     EventListener listener = ((EventListener) u);

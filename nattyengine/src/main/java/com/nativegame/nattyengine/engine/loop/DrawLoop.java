@@ -34,7 +34,7 @@ public class DrawLoop extends BaseLoop {
     // Overriding methods
     //--------------------------------------------------------
     @Override
-    public void updateLoop(long elapsedMillis) {
+    public void onUpdateLoop(long elapsedMillis) {
         if (elapsedMillis < DELTA_TIME) {
             try {
                 // We make sure each loop is fixed

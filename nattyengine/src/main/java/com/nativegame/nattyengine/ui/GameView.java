@@ -45,7 +45,9 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mListener.onDraw(canvas);
+        if (mListener != null) {
+            mListener.onDraw(canvas);
+        }
     }
     //========================================================
 
