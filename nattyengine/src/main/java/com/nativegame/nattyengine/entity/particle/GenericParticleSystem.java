@@ -18,7 +18,7 @@ import com.nativegame.nattyengine.entity.particle.modifier.ParticleModifier;
 import com.nativegame.nattyengine.entity.particle.modifier.RotationParticleModifier;
 import com.nativegame.nattyengine.entity.particle.modifier.ScaleParticleModifier;
 import com.nativegame.nattyengine.util.math.RandomUtils;
-import com.nativegame.nattyengine.util.modifier.DurationModifier;
+import com.nativegame.nattyengine.entity.modifier.DurationModifier;
 import com.nativegame.nattyengine.util.modifier.Modifier;
 import com.nativegame.nattyengine.util.pool.Pool;
 

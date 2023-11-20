@@ -8,9 +8,9 @@ import com.nativegame.nattyengine.camera.Camera;
 
 public interface TouchEventListener {
 
-    Camera.CoordinateType getCoordinateType();
-
-    void setCoordinateType(Camera.CoordinateType type);
+    default Camera.CoordinateType getCoordinateType() {
+        return Camera.CoordinateType.WORLD;
+    }
 
     void onTouchEvent(int type, float touchX, float touchY);
 

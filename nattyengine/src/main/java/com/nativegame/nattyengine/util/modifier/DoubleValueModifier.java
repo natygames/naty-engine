@@ -49,6 +49,10 @@ public abstract class DoubleValueModifier<T> extends BaseValueModifier<T> {
         return mEndValueY;
     }
 
+    public void setValue(float startValue, float endValue) {
+        setValue(startValue, endValue, startValue, endValue);
+    }
+
     public void setValue(float startValueX, float endValueX, float startValueY, float endValueY) {
         mStartValueX = startValueX;
         mStartValueY = startValueY;

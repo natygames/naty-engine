@@ -13,6 +13,10 @@ public class TimerEvent {
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
+    public TimerEvent(TimerEventListener listener) {
+        this(listener, 0);
+    }
+
     public TimerEvent(TimerEventListener listener, long time) {
         mListener = listener;
         mEventTime = time;

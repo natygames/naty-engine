@@ -43,6 +43,10 @@ public class Timer extends Entity {
     public void setLooping(boolean looping) {
         mIsLooping = looping;
     }
+
+    public List<TimerEvent> getAllTimerEvents() {
+        return mEvents;
+    }
     //========================================================
 
     //--------------------------------------------------------
@@ -107,7 +111,6 @@ public class Timer extends Entity {
         mEventCount = 0;
         mTotalEventTime = 0;
         mTotalTime = 0;
-        System.out.println("end");
     }
 
     public void pauseTimer() {
