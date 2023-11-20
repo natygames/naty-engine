@@ -11,12 +11,12 @@ public class FixedObjectPool<T> extends BasePool<T> {
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    public FixedObjectPool(PoolObjectFactory<T> factory, int initCount) {
-        this(factory, initCount, initCount);
+    public FixedObjectPool(PoolObjectFactory<T> factory, int minCount) {
+        this(factory, minCount, minCount);
     }
 
-    public FixedObjectPool(PoolObjectFactory<T> factory, int initCount, int maxCount) {
-        super(factory, initCount);
+    public FixedObjectPool(PoolObjectFactory<T> factory, int minCount, int maxCount) {
+        super(factory, minCount);
         mMaxObjectCount = maxCount;
     }
     //========================================================

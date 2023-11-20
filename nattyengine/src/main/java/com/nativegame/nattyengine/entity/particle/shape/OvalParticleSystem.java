@@ -8,15 +8,27 @@ import com.nativegame.nattyengine.entity.shape.geometry.Oval;
 import com.nativegame.nattyengine.util.pool.Pool;
 import com.nativegame.nattyengine.util.pool.SafeFixedObjectPool;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class OvalParticleSystem extends GenericParticleSystem {
 
-    public OvalParticleSystem(Engine engine, int width, int height, int min, int max) {
+    //--------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------
+    public OvalParticleSystem(Engine engine, int width, int height, int minCount) {
+        this(engine, width, height, minCount, minCount);
+    }
+
+    public OvalParticleSystem(Engine engine, int width, int height, int minCount, int maxCount) {
         super(engine, new SafeFixedObjectPool<>(new Pool.PoolObjectFactory<Particle>() {
             @Override
             public Particle createObject() {
                 return new GenericParticle<>(engine, new Oval(engine, width, height));
             }
-        }, min, max));
+        }, minCount, maxCount));
     }
+    //========================================================
 
 }

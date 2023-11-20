@@ -8,15 +8,27 @@ import com.nativegame.nattyengine.entity.shape.geometry.Circle;
 import com.nativegame.nattyengine.util.pool.Pool;
 import com.nativegame.nattyengine.util.pool.SafeFixedObjectPool;
 
+/**
+ * Created by Oscar Liang on 2022/12/11
+ */
+
 public class CircleParticleSystem extends GenericParticleSystem {
 
-    public CircleParticleSystem(Engine engine, int radius, int min, int max) {
+    //--------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------
+    public CircleParticleSystem(Engine engine, int radius, int minCount) {
+        this(engine, radius, minCount, minCount);
+    }
+
+    public CircleParticleSystem(Engine engine, int radius, int minCount, int maxCount) {
         super(engine, new SafeFixedObjectPool<>(new Pool.PoolObjectFactory<Particle>() {
             @Override
             public Particle createObject() {
                 return new GenericParticle<>(engine, new Circle(engine, radius));
             }
-        }, min, max));
+        }, minCount, maxCount));
     }
+    //========================================================
 
 }

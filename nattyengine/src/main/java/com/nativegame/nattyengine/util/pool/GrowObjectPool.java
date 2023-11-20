@@ -9,8 +9,8 @@ public class GrowObjectPool<T> extends BasePool<T> {
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    public GrowObjectPool(PoolObjectFactory<T> factory, int initCount) {
-        super(factory, initCount);
+    public GrowObjectPool(PoolObjectFactory<T> factory, int minCount) {
+        super(factory, minCount);
     }
     //========================================================
 
