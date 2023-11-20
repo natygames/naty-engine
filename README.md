@@ -16,7 +16,6 @@
 ## :pushpin: Features
 * :rocket: **Entity** - Sprite, Animation, ParticleSystem, Modifier...
 * :musical_note: **Audio** - Audio control using [SoundPool API](https://developer.android.com/reference/android/media/SoundPool) and [MediaPlayer API](https://developer.android.com/reference/android/media/MediaPlayer)
-* :atom: **Physics** - Pixel perfect collision using spatial partitioning
 * :joystick: **Input** - Touch, Acceleration and Orientation support
 * :art: **Graphics** - 2D Rendering using [Canvas API](https://developer.android.com/reference/android/graphics/Canvas)
 * :gear: **UI** - Native Android UI with Fragment, Dialog, Button...
@@ -40,7 +39,6 @@ dependencies {
 
 ## :video_game: Game Project
 [<img src="https://user-images.githubusercontent.com/93536412/227769818-765004b1-7ed5-4b88-9156-1e3d9fd15dcb.png" width="70">](https://github.com/nativegamestudio/juicy-match) 
-[<img src="https://user-images.githubusercontent.com/93536412/227769871-22eb91ff-d72d-45c4-b217-ce3fe44111ac.png" width="70">](https://github.com/nativegamestudio/animals-pop)
 
 ## :balance_scale: License
  Natty Engine is licensed under the [MIT license](https://github.com/nativegamestudio/natty-engine/blob/master/LICENSE)
