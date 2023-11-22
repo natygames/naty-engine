@@ -1,4 +1,4 @@
-package com.nativegame.nattyengine.util.math;
+package com.nativegame.nattyengine.util;
 
 import java.util.Random;
 

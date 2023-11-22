@@ -1,4 +1,4 @@
-package com.nativegame.nattyengine.entity.counter;
+package com.nativegame.nattyengine.util.debug;
 
 import com.nativegame.nattyengine.camera.Camera;
 import com.nativegame.nattyengine.engine.Engine;
@@ -16,8 +16,12 @@ public class UPSCounter extends Text {
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    public UPSCounter(Engine engine, float relativeCameraX, float relativeCameraY, int width, int height) {
-        super(engine, relativeCameraX, relativeCameraY, width, height, "");
+    public UPSCounter(Engine engine, int width, int height) {
+        this(engine, 0, 0, width, height);
+    }
+
+    public UPSCounter(Engine engine, float x, float y, int width, int height) {
+        super(engine, x, y, width, height);
         setCoordinateType(Camera.CoordinateType.CAMERA);
         setPaint(engine.getDebugger().getDebugTextPaint());
         setTextHorizontalAlign(TextHorizontalAlign.LEFT);

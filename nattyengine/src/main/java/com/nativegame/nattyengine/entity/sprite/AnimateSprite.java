@@ -3,7 +3,7 @@ package com.nativegame.nattyengine.entity.sprite;
 import com.nativegame.nattyengine.engine.Engine;
 import com.nativegame.nattyengine.texture.Texture;
 import com.nativegame.nattyengine.texture.TextureGroup;
-import com.nativegame.nattyengine.util.math.MathUtils;
+import com.nativegame.nattyengine.util.MathUtils;
 
 /**
  * Created by Oscar Liang on 2022/12/11

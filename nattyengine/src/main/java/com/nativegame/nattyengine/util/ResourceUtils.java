@@ -1,4 +1,4 @@
-package com.nativegame.nattyengine.util.resource;
+package com.nativegame.nattyengine.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;

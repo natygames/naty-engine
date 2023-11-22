@@ -1,4 +1,4 @@
-package com.nativegame.nattyengine.util.math;
+package com.nativegame.nattyengine.util;
 
 /**
  * Created by Oscar Liang on 2022/12/11

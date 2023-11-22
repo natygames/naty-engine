@@ -1,7 +1,7 @@
 package com.nativegame.nattyengine.camera;
 
 import com.nativegame.nattyengine.util.exception.EngineRuntimeException;
-import com.nativegame.nattyengine.util.math.ResolutionUtils;
+import com.nativegame.nattyengine.util.ResolutionUtils;
 
 /**
  * Created by Oscar Liang on 2022/12/11

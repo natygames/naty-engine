@@ -1,7 +1,7 @@
 package com.nativegame.nattyengine.entity.particle.initializer;
 
 import com.nativegame.nattyengine.entity.particle.Particle;
-import com.nativegame.nattyengine.util.math.RandomUtils;
+import com.nativegame.nattyengine.util.RandomUtils;
 
 /**
  * Created by Oscar Liang on 2022/12/11

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 
 import com.nativegame.nattyengine.texture.BaseTextureManager;
 import com.nativegame.nattyengine.texture.TextureFormat;
-import com.nativegame.nattyengine.util.resource.ResourceUtils;
+import com.nativegame.nattyengine.util.ResourceUtils;
 
 /**
  * Created by Oscar Liang on 2022/12/11

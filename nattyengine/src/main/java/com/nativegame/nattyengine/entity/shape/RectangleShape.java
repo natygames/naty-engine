@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 
 import com.nativegame.nattyengine.camera.Camera;
 import com.nativegame.nattyengine.engine.Engine;
-import com.nativegame.nattyengine.util.math.TransformUtils;
+import com.nativegame.nattyengine.util.TransformUtils;
 
 import java.util.Arrays;
 
@@ -97,22 +97,22 @@ public abstract class RectangleShape extends Shape {
         // Apply scale
         float scalePivotX = mX + getScalePivotX();
         float scalePivotY = mY + getScalePivotY();
-        float x = TransformUtils.getScaleX(mX, scalePivotX, mScaleX);
-        float y = TransformUtils.getScaleY(mY, scalePivotY, mScaleY);
-        float endX = TransformUtils.getScaleX(getEndX(), scalePivotX, mScaleX);
-        float endY = TransformUtils.getScaleY(getEndY(), scalePivotY, mScaleY);
-        float rotationPivotX = TransformUtils.getScaleX(mX + getRotationPivotX(), scalePivotX, mScaleX);
-        float rotationPivotY = TransformUtils.getScaleY(mY + getRotationPivotY(), scalePivotY, mScaleY);
+        float x = TransformUtils.getTransformScaleX(mX, scalePivotX, mScaleX);
+        float y = TransformUtils.getTransformScaleY(mY, scalePivotY, mScaleY);
+        float endX = TransformUtils.getTransformScaleX(getEndX(), scalePivotX, mScaleX);
+        float endY = TransformUtils.getTransformScaleY(getEndY(), scalePivotY, mScaleY);
+        float rotationPivotX = TransformUtils.getTransformScaleX(mX + getRotationPivotX(), scalePivotX, mScaleX);
+        float rotationPivotY = TransformUtils.getTransformScaleY(mY + getRotationPivotY(), scalePivotY, mScaleY);
 
         // Apply rotation
-        float rotateLeftTopX = TransformUtils.getRotateX(x, y, rotationPivotX, rotationPivotY, mRotation);
-        float rotateLeftTopY = TransformUtils.getRotateY(x, y, rotationPivotX, rotationPivotY, mRotation);
-        float rotateRightTopX = TransformUtils.getRotateX(endX, y, rotationPivotX, rotationPivotY, mRotation);
-        float rotateRightTopY = TransformUtils.getRotateY(endX, y, rotationPivotX, rotationPivotY, mRotation);
-        float rotateLeftBottomX = TransformUtils.getRotateX(x, endY, rotationPivotX, rotationPivotY, mRotation);
-        float rotateLeftBottomY = TransformUtils.getRotateY(x, endY, rotationPivotX, rotationPivotY, mRotation);
-        float rotateRightBottomX = TransformUtils.getRotateX(endX, endY, rotationPivotX, rotationPivotY, mRotation);
-        float rotateRightBottomY = TransformUtils.getRotateY(endX, endY, rotationPivotX, rotationPivotY, mRotation);
+        float rotateLeftTopX = TransformUtils.getTransformRotateX(x, y, rotationPivotX, rotationPivotY, mRotation);
+        float rotateLeftTopY = TransformUtils.getTransformRotateY(x, y, rotationPivotX, rotationPivotY, mRotation);
+        float rotateRightTopX = TransformUtils.getTransformRotateX(endX, y, rotationPivotX, rotationPivotY, mRotation);
+        float rotateRightTopY = TransformUtils.getTransformRotateY(endX, y, rotationPivotX, rotationPivotY, mRotation);
+        float rotateLeftBottomX = TransformUtils.getTransformRotateX(x, endY, rotationPivotX, rotationPivotY, mRotation);
+        float rotateLeftBottomY = TransformUtils.getTransformRotateY(x, endY, rotationPivotX, rotationPivotY, mRotation);
+        float rotateRightBottomX = TransformUtils.getTransformRotateX(endX, endY, rotationPivotX, rotationPivotY, mRotation);
+        float rotateRightBottomY = TransformUtils.getTransformRotateY(endX, endY, rotationPivotX, rotationPivotY, mRotation);
 
         // Init a temp array to store all x value
         mRotatePoints[0] = rotateLeftTopX;

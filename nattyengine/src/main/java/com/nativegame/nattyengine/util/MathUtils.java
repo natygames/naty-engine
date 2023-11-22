@@ -1,4 +1,4 @@
-package com.nativegame.nattyengine.util.math;
+package com.nativegame.nattyengine.util;
 
 import java.util.Arrays;
 
@@ -70,29 +70,29 @@ public class MathUtils {
         return sum;
     }
 
-    public static float[] fill(float value, int size) {
-        float[] values = new float[size];
+    public static float[] fill(float value, int count) {
+        float[] values = new float[count];
         Arrays.fill(values, value);
 
         return values;
     }
 
-    public static double[] fill(double value, int size) {
-        double[] values = new double[size];
+    public static double[] fill(double value, int count) {
+        double[] values = new double[count];
         Arrays.fill(values, value);
 
         return values;
     }
 
-    public static int[] fill(int value, int size) {
-        int[] values = new int[size];
+    public static int[] fill(int value, int count) {
+        int[] values = new int[count];
         Arrays.fill(values, value);
 
         return values;
     }
 
-    public static long[] fill(long value, int size) {
-        long[] values = new long[size];
+    public static long[] fill(long value, int count) {
+        long[] values = new long[count];
         Arrays.fill(values, value);
 
         return values;
