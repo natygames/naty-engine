@@ -12,6 +12,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "NattyEngine"
+rootProject.name = "NatyEngine"
 include ':app'
-include ':nattyengine'
+include ':natyengine'

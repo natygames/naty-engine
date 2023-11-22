@@ -11,7 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/nattyengine" />
+            <option value="$PROJECT_DIR$/natyengine" />
           </set>
         </option>
       </GradleProjectSettings>
