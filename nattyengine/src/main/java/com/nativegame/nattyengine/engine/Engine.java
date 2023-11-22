@@ -291,14 +291,16 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
 
     public void releaseGame() {
         synchronized (mUpdatables) {
-            int updatableCount = mUpdatables.size();
-            for (int i = updatableCount - 1; i >= 0; i--) {
-                Updatable u = mUpdatables.get(i);
-                u.removeFromGame();
-                if (u instanceof Releasable) {
-                    Releasable r = (Releasable) u;
-                    if (!r.isRelease()) {
-                        r.release();
+            synchronized (mDrawables) {
+                int updatableCount = mUpdatables.size();
+                for (int i = updatableCount - 1; i >= 0; i--) {
+                    Updatable u = mUpdatables.get(i);
+                    u.removeFromGame();
+                    if (u instanceof Releasable) {
+                        Releasable r = (Releasable) u;
+                        if (!r.isRelease()) {
+                            r.release();
+                        }
                     }
                 }
             }
