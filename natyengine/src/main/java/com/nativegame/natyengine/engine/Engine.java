@@ -197,7 +197,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
     //--------------------------------------------------------
     // Methods
     //--------------------------------------------------------
-    public void startGame() {
+    public void start() {
         if (mGameView == null) {
             throw new EngineRuntimeException("GameView not found!");
         }
@@ -227,7 +227,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         mDrawLoop.startLoop();
     }
 
-    public void stopGame() {
+    public void stop() {
         mSceneController.stop();
         if (mUpdateLoop != null) {
             mUpdateLoop.stopLoop();
@@ -251,7 +251,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         }
     }
 
-    public void pauseGame() {
+    public void pause() {
         mSceneController.pause();
         if (mUpdateLoop != null) {
             mUpdateLoop.pauseLoop();
@@ -270,7 +270,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         }
     }
 
-    public void resumeGame() {
+    public void resume() {
         mSceneController.resume();
         if (mUpdateLoop != null) {
             mUpdateLoop.resumeLoop();
@@ -289,7 +289,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
         }
     }
 
-    public void releaseGame() {
+    public void release() {
         synchronized (mUpdatables) {
             synchronized (mDrawables) {
                 int updatableCount = mUpdatables.size();

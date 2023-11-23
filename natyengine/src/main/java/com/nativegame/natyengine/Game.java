@@ -70,29 +70,29 @@ public class Game {
     //--------------------------------------------------------
     public final void start() {
         if (!mEngine.isRunning()) {
-            mEngine.startGame();
+            mEngine.start();
             onStart();
         }
     }
 
     public final void stop() {
         if (mEngine.isRunning()) {
-            mEngine.stopGame();
-            mEngine.releaseGame();
+            mEngine.stop();
+            mEngine.release();
             onStop();
         }
     }
 
     public final void pause() {
         if (mEngine.isRunning() && !mEngine.isPaused()) {
-            mEngine.pauseGame();
+            mEngine.pause();
             onPause();
         }
     }
 
     public final void resume() {
         if (mEngine.isRunning() && mEngine.isPaused()) {
-            mEngine.resumeGame();
+            mEngine.resume();
             onResume();
         }
     }
