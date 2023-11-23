@@ -3,14 +3,14 @@ package com.nativegame.natyengine.entity.sprite;
 import android.graphics.Canvas;
 
 import com.nativegame.natyengine.engine.Engine;
-import com.nativegame.natyengine.entity.shape.RectangleShape;
+import com.nativegame.natyengine.entity.shape.RectangleShapeEntity;
 import com.nativegame.natyengine.texture.Texture;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public class Sprite extends RectangleShape {
+public class Sprite extends RectangleShapeEntity {
 
     protected Texture mTexture;
 

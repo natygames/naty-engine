@@ -1,20 +1,22 @@
 package com.nativegame.natyengine.entity.particle.initializer;
 
+import android.graphics.Paint;
+
 import com.nativegame.natyengine.entity.particle.Particle;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public class ColorParticleInitializer implements ParticleInitializer {
+public class PaintParticleInitializer implements ParticleInitializer {
 
-    private final int mColor;
+    private final Paint mPaint;
 
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    public ColorParticleInitializer(int color) {
-        mColor = color;
+    public PaintParticleInitializer(Paint paint) {
+        mPaint = paint;
     }
     //========================================================
 
@@ -23,7 +25,7 @@ public class ColorParticleInitializer implements ParticleInitializer {
     //--------------------------------------------------------
     @Override
     public void initParticle(Particle particle) {
-        particle.setColor(mColor);
+        particle.setPaint(mPaint);
     }
     //========================================================
 

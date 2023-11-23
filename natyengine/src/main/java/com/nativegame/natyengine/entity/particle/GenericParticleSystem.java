@@ -1,12 +1,15 @@
 package com.nativegame.natyengine.entity.particle;
 
+import android.graphics.Paint;
+
 import com.nativegame.natyengine.engine.Engine;
 import com.nativegame.natyengine.entity.Entity;
 import com.nativegame.natyengine.entity.Reusable;
+import com.nativegame.natyengine.entity.modifier.DurationModifier;
 import com.nativegame.natyengine.entity.particle.initializer.AccelerationXParticleInitializer;
 import com.nativegame.natyengine.entity.particle.initializer.AccelerationYParticleInitializer;
-import com.nativegame.natyengine.entity.particle.initializer.ColorParticleInitializer;
 import com.nativegame.natyengine.entity.particle.initializer.DurationParticleInitialize;
+import com.nativegame.natyengine.entity.particle.initializer.PaintParticleInitializer;
 import com.nativegame.natyengine.entity.particle.initializer.ParticleInitializer;
 import com.nativegame.natyengine.entity.particle.initializer.RotationParticleInitializer;
 import com.nativegame.natyengine.entity.particle.initializer.RotationSpeedParticleInitializer;
@@ -18,7 +21,6 @@ import com.nativegame.natyengine.entity.particle.modifier.ParticleModifier;
 import com.nativegame.natyengine.entity.particle.modifier.RotationParticleModifier;
 import com.nativegame.natyengine.entity.particle.modifier.ScaleParticleModifier;
 import com.nativegame.natyengine.util.RandomUtils;
-import com.nativegame.natyengine.entity.modifier.DurationModifier;
 import com.nativegame.natyengine.util.modifier.Modifier;
 import com.nativegame.natyengine.util.pool.Pool;
 
@@ -209,8 +211,8 @@ public class GenericParticleSystem extends Entity
     }
 
     @Override
-    public ParticleSystem setColor(int color) {
-        mInitializers.add(new ColorParticleInitializer(color));
+    public ParticleSystem setPaint(Paint paint) {
+        mInitializers.add(new PaintParticleInitializer(paint));
         return this;
     }
 

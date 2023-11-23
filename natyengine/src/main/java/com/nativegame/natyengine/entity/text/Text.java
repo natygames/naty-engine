@@ -5,14 +5,14 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 
 import com.nativegame.natyengine.engine.Engine;
-import com.nativegame.natyengine.entity.shape.RectangleShape;
+import com.nativegame.natyengine.entity.shape.RectangleShapeEntity;
 import com.nativegame.natyengine.util.exception.EngineRuntimeException;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public class Text extends RectangleShape {
+public class Text extends RectangleShapeEntity {
 
     private String mText;
     private TextHorizontalAlign mHorizontalAlign = TextHorizontalAlign.CENTER;

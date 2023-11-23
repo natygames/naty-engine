@@ -1,5 +1,7 @@
 package com.nativegame.natyengine.entity.particle;
 
+import android.graphics.Paint;
+
 import com.nativegame.natyengine.entity.Reusable;
 import com.nativegame.natyengine.entity.particle.initializer.ParticleInitializer;
 import com.nativegame.natyengine.entity.particle.modifier.ParticleModifier;
@@ -32,7 +34,7 @@ public interface Particle extends Reusable<Particle> {
 
     void setAlpha(int alpha);
 
-    void setColor(int color);
+    void setPaint(Paint paint);
 
     void setParticleInitializer(List<ParticleInitializer> initializers);
 

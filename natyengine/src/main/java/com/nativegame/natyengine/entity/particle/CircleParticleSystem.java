@@ -1,10 +1,10 @@
-package com.nativegame.natyengine.entity.particle.shape;
+package com.nativegame.natyengine.entity.particle;
 
 import com.nativegame.natyengine.engine.Engine;
 import com.nativegame.natyengine.entity.particle.GenericParticle;
 import com.nativegame.natyengine.entity.particle.GenericParticleSystem;
 import com.nativegame.natyengine.entity.particle.Particle;
-import com.nativegame.natyengine.entity.shape.geometry.Rectangle;
+import com.nativegame.natyengine.entity.shape.primitive.Circle;
 import com.nativegame.natyengine.util.pool.Pool;
 import com.nativegame.natyengine.util.pool.SafeFixedObjectPool;
 
@@ -12,20 +12,20 @@ import com.nativegame.natyengine.util.pool.SafeFixedObjectPool;
  * Created by Oscar Liang on 2022/12/11
  */
 
-public class RectangleParticleSystem extends GenericParticleSystem {
+public class CircleParticleSystem extends GenericParticleSystem {
 
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    public RectangleParticleSystem(Engine engine, int width, int height, int minCount) {
-        this(engine, width, height, minCount, minCount);
+    public CircleParticleSystem(Engine engine, int radius, int minCount) {
+        this(engine, radius, minCount, minCount);
     }
 
-    public RectangleParticleSystem(Engine engine, int width, int height, int minCount, int maxCount) {
+    public CircleParticleSystem(Engine engine, int radius, int minCount, int maxCount) {
         super(engine, new SafeFixedObjectPool<>(new Pool.PoolObjectFactory<Particle>() {
             @Override
             public Particle createObject() {
-                return new GenericParticle<>(engine, new Rectangle(engine, width, height));
+                return new GenericParticle<>(engine, new Circle(engine, radius));
             }
         }, minCount, maxCount));
     }

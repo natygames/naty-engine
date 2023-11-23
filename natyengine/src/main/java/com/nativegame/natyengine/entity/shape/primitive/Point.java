@@ -4,13 +4,13 @@ import android.graphics.Canvas;
 
 import com.nativegame.natyengine.camera.Camera;
 import com.nativegame.natyengine.engine.Engine;
-import com.nativegame.natyengine.entity.shape.Shape;
+import com.nativegame.natyengine.entity.shape.ShapeEntity;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public class Point extends Shape {
+public class Point extends ShapeEntity {
 
     //--------------------------------------------------------
     // Constructors

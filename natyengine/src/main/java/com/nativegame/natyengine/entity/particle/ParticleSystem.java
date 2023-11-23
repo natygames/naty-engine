@@ -1,5 +1,7 @@
 package com.nativegame.natyengine.entity.particle;
 
+import android.graphics.Paint;
+
 import com.nativegame.natyengine.entity.particle.initializer.ParticleInitializer;
 import com.nativegame.natyengine.entity.particle.modifier.ParticleModifier;
 
@@ -55,7 +57,7 @@ public interface ParticleSystem {
 
     ParticleSystem setInitialRotation(int minAngle, int maxAngle);
 
-    ParticleSystem setColor(int color);
+    ParticleSystem setPaint(Paint paint);
 
     ParticleSystem addInitializer(ParticleInitializer initializer);
 

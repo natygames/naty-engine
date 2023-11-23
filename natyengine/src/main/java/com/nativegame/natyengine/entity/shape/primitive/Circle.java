@@ -1,16 +1,16 @@
-package com.nativegame.natyengine.entity.shape.geometry;
+package com.nativegame.natyengine.entity.shape.primitive;
 
 import android.graphics.Canvas;
 
 import com.nativegame.natyengine.camera.Camera;
 import com.nativegame.natyengine.engine.Engine;
-import com.nativegame.natyengine.entity.shape.RectangleShape;
+import com.nativegame.natyengine.entity.shape.RectangleShapeEntity;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public class Circle extends RectangleShape {
+public class Circle extends RectangleShapeEntity {
 
     private int mRadius;
 

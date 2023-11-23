@@ -1,14 +1,15 @@
 package com.nativegame.natyengine.entity.particle;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import com.nativegame.natyengine.camera.Camera;
 import com.nativegame.natyengine.engine.Engine;
 import com.nativegame.natyengine.entity.Reusable;
 import com.nativegame.natyengine.entity.ScreenEntity;
-import com.nativegame.natyengine.entity.shape.RectangleShape;
 import com.nativegame.natyengine.entity.particle.initializer.ParticleInitializer;
 import com.nativegame.natyengine.entity.particle.modifier.ParticleModifier;
+import com.nativegame.natyengine.entity.shape.RectangleShape;
 
 import java.util.List;
 
@@ -31,9 +32,10 @@ public class GenericParticle<T extends RectangleShape> extends ScreenEntity impl
     private float mRotation;
     private float mScale;
     private int mAlpha;
-    private int mColor;
     private long mDuration;
     private long mTotalTime;
+
+    private final Paint mPaint = new Paint();
 
     //--------------------------------------------------------
     // Constructors
@@ -98,8 +100,8 @@ public class GenericParticle<T extends RectangleShape> extends ScreenEntity impl
     }
 
     @Override
-    public void setColor(int color) {
-        mColor = color;
+    public void setPaint(Paint paint) {
+        mPaint.set(paint);
     }
 
     @Override
@@ -174,7 +176,7 @@ public class GenericParticle<T extends RectangleShape> extends ScreenEntity impl
         mChild.setRotation(mRotation);
         mChild.setScale(mScale);
         mChild.setAlpha(mAlpha);
-        mChild.setColor(mColor);
+        mChild.setPaint(mPaint);
     }
 
     private void initParticle() {

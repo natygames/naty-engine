@@ -1,10 +1,10 @@
-package com.nativegame.natyengine.entity.particle.shape;
+package com.nativegame.natyengine.entity.particle;
 
 import com.nativegame.natyengine.engine.Engine;
 import com.nativegame.natyengine.entity.particle.GenericParticle;
 import com.nativegame.natyengine.entity.particle.GenericParticleSystem;
 import com.nativegame.natyengine.entity.particle.Particle;
-import com.nativegame.natyengine.entity.shape.geometry.Oval;
+import com.nativegame.natyengine.entity.shape.primitive.Oval;
 import com.nativegame.natyengine.util.pool.Pool;
 import com.nativegame.natyengine.util.pool.SafeFixedObjectPool;
 
