@@ -4,12 +4,13 @@ import android.graphics.Paint;
 
 import com.nativegame.natyengine.camera.Camera;
 import com.nativegame.natyengine.entity.Drawable;
+import com.nativegame.natyengine.entity.Updatable;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public interface Shape extends Drawable {
+public interface Shape extends Updatable, Drawable {
 
     Camera.CoordinateType getCoordinateType();
 

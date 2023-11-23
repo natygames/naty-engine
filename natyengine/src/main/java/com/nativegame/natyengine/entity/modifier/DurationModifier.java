@@ -1,13 +1,13 @@
 package com.nativegame.natyengine.entity.modifier;
 
-import com.nativegame.natyengine.entity.Entity;
+import com.nativegame.natyengine.entity.Updatable;
 import com.nativegame.natyengine.util.modifier.BaseModifier;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public class DurationModifier extends BaseModifier<Entity> {
+public class DurationModifier extends BaseModifier<Updatable> {
 
     private boolean mIsAutoRemove = false;
 
@@ -39,22 +39,22 @@ public class DurationModifier extends BaseModifier<Entity> {
     // Overriding methods
     //--------------------------------------------------------
     @Override
-    protected void onStartModifier(Entity entity) {
+    protected void onStartModifier(Updatable entity) {
     }
 
     @Override
-    protected void onUpdateModifier(Entity entity, float durationPercentage) {
+    protected void onUpdateModifier(Updatable entity, float durationPercentage) {
     }
 
     @Override
-    protected void onEndModifier(Entity entity) {
+    protected void onEndModifier(Updatable entity) {
         if (mIsAutoRemove) {
             entity.removeFromGame();
         }
     }
 
     @Override
-    protected void onResetModifier(Entity entity) {
+    protected void onResetModifier(Updatable entity) {
     }
     //========================================================
 
