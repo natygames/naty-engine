@@ -1,6 +1,6 @@
 <div align="center">
-<img src="https://github.com/nativegamestudio/naty-engine/assets/93536412/0f5fcc0e-1ae2-417a-b20f-d05174fcce07.png" width="500">
-
+<img src="https://github.com/nativegamestudio/naty-engine/assets/93536412/eddf58d8-2ade-4500-bf6b-539053cfdafc" width="500">
+    
 [![](https://jitpack.io/v/nativegamestudio/naty-engine.svg)](https://jitpack.io/#nativegamestudio/natty-engine)
 ![platform](https://img.shields.io/badge/platform-Android-brightgreen)
 ![minSdk](https://img.shields.io/badge/minSdk-21-brightgreen)
