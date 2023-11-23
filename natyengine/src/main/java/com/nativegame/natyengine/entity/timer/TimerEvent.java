@@ -45,10 +45,6 @@ public class TimerEvent {
     public boolean isTimerEventDispatch() {
         return mIsEventDispatch;
     }
-
-    public void setTimerEventDispatch(boolean eventDispatch) {
-        mIsEventDispatch = eventDispatch;
-    }
     //========================================================
 
     //--------------------------------------------------------

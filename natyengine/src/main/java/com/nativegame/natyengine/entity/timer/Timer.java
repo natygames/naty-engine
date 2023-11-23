@@ -80,7 +80,7 @@ public class Timer extends Entity {
                     event.resetTimerEvent();
                 }
             } else {
-                stopTimer();
+                stop();
             }
         }
     }
@@ -88,7 +88,8 @@ public class Timer extends Entity {
     @Override
     public void reset() {
         super.reset();
-        stopTimer();
+        mIsLooping = false;
+        stop();
         clearTimerEvent();
     }
     //========================================================
@@ -96,13 +97,13 @@ public class Timer extends Entity {
     //--------------------------------------------------------
     // Methods
     //--------------------------------------------------------
-    public void startTimer() {
+    public void start() {
         mIsTimerRunning = true;
-        resetTimer();
+        resetTimerEvent();
         addToGame();
     }
 
-    public void stopTimer() {
+    public void stop() {
         // Check has timer been started yet
         if (isRunning()) {
             removeFromGame();
@@ -113,26 +114,12 @@ public class Timer extends Entity {
         mTotalTime = 0;
     }
 
-    public void pauseTimer() {
+    public void pause() {
         mIsTimerRunning = false;
     }
 
-    public void resumeTimer() {
+    public void resume() {
         mIsTimerRunning = true;
-    }
-
-    public void resetTimer() {
-        mEventCount = mEvents.size();
-        mTotalEventTime = 0;
-        mTotalTime = 0;
-        // Reset event state
-        for (int i = 0; i < mEventCount; i++) {
-            TimerEvent event = mEvents.get(i);
-            event.resetTimerEvent();
-            if (event.getEventTime() > mTotalEventTime) {
-                mTotalEventTime = event.getEventTime();
-            }
-        }
     }
 
     public void addTimerEvent(TimerEvent event) {
@@ -145,6 +132,20 @@ public class Timer extends Entity {
 
     public void clearTimerEvent() {
         mEvents.clear();
+    }
+
+    public void resetTimerEvent() {
+        mEventCount = mEvents.size();
+        mTotalEventTime = 0;
+        mTotalTime = 0;
+        // Reset event state
+        for (int i = 0; i < mEventCount; i++) {
+            TimerEvent event = mEvents.get(i);
+            event.resetTimerEvent();
+            if (event.getEventTime() > mTotalEventTime) {
+                mTotalEventTime = event.getEventTime();
+            }
+        }
     }
     //========================================================
 
