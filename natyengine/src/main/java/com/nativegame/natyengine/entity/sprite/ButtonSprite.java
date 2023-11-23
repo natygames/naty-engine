@@ -5,31 +5,32 @@ import com.nativegame.natyengine.input.touch.BoundTouchEventListener;
 import com.nativegame.natyengine.input.touch.TouchEvent;
 import com.nativegame.natyengine.input.touch.TouchEventListener;
 import com.nativegame.natyengine.texture.Texture;
+import com.nativegame.natyengine.texture.TextureGroup;
 
 /**
  * Created by Oscar Liang on 2022/12/11
  */
 
-public class ButtonSprite extends Sprite implements BoundTouchEventListener, TouchEventListener {
+public class ButtonSprite extends FrameSprite implements BoundTouchEventListener, TouchEventListener {
 
     private ButtonListener mListener;
     private ButtonState mState = ButtonState.ENABLE;
 
     public enum ButtonState {
         ENABLE,
-        DISABLE,
-        PRESSED
+        PRESSED,
+        DISABLE
     }
 
     //--------------------------------------------------------
     // Constructors
     //--------------------------------------------------------
-    public ButtonSprite(Engine engine, Texture texture) {
-        super(engine, texture);
+    public ButtonSprite(Engine engine, TextureGroup<? extends Texture> textureGroup) {
+        super(engine, textureGroup);
     }
 
-    public ButtonSprite(Engine engine, float x, float y, Texture texture) {
-        super(engine, x, y, texture);
+    public ButtonSprite(Engine engine, float x, float y, TextureGroup<? extends Texture> textureGroup) {
+        super(engine, x, y, textureGroup);
     }
     //========================================================
 
@@ -91,13 +92,20 @@ public class ButtonSprite extends Sprite implements BoundTouchEventListener, Tou
         }
         switch (mState) {
             case ENABLE:
+                setCurrentFrameIndex(0);
                 mListener.onEnableButton(this);
                 break;
-            case DISABLE:
-                mListener.onDisableButton(this);
-                break;
             case PRESSED:
+                if (getFrameCount() >= 2) {
+                    setCurrentFrameIndex(1);
+                }
                 mListener.onPressedButton(this);
+                break;
+            case DISABLE:
+                if (getFrameCount() >= 3) {
+                    setCurrentFrameIndex(2);
+                }
+                mListener.onDisableButton(this);
                 break;
         }
     }

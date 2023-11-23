@@ -56,6 +56,10 @@ public class FrameSprite extends Sprite {
     public void setCurrentFrameIndex(int currentFrameIndex) {
         mCurrentFrameIndex = currentFrameIndex;
     }
+
+    public int getFrameCount() {
+        return mTextureGroup.getTextureCount();
+    }
     //========================================================
 
     //--------------------------------------------------------
