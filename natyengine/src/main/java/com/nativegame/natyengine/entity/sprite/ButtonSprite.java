@@ -59,7 +59,7 @@ public class ButtonSprite extends FrameSprite implements BoundTouchEventListener
     // Overriding methods
     //--------------------------------------------------------
     @Override
-    public void onAreaTouchEvent(int type, float relativeTouchX, float relativeTouchY) {
+    public void onBoundTouchEvent(int type, float relativeTouchX, float relativeTouchY) {
         if (mState == ButtonState.DISABLE) {
             return;
         }

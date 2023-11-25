@@ -20,6 +20,6 @@ public interface BoundTouchEventListener {
 
     float getEndY();
 
-    void onAreaTouchEvent(int type, float relativeTouchX, float relativeTouchY);
+    void onBoundTouchEvent(int type, float relativeTouchX, float relativeTouchY);
 
 }

@@ -347,7 +347,7 @@ public class Engine implements UpdateLoop.UpdateListener, DrawLoop.DrawListener,
                     // Check is in bounds
                     if (touchX > listener.getX() && touchX < listener.getEndX()
                             && touchY > listener.getY() && touchY < listener.getEndY()) {
-                        listener.onAreaTouchEvent(event.getType(), touchX - listener.getX(),
+                        listener.onBoundTouchEvent(event.getType(), touchX - listener.getX(),
                                 touchY - listener.getY());
                     }
                 }
