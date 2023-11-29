@@ -46,14 +46,6 @@ public class Grid extends RectangleShapeEntity {
     public void setColumn(int column) {
         mColumn = column;
     }
-
-    public int getGridWidth() {
-        return getWidth() / mColumn;
-    }
-
-    public int getGridHeight() {
-        return getHeight() / mRow;
-    }
     //========================================================
 
     //--------------------------------------------------------
@@ -62,14 +54,14 @@ public class Grid extends RectangleShapeEntity {
     @Override
     protected void onDrawCanvas(Canvas canvas) {
         // Draw vertical line
-        float gridWidth = getGridWidth();
+        float gridWidth = getWidth() * 1f / mColumn;   // Use float for higher currency
         for (int i = 0; i <= mColumn; i++) {
             float x = i * gridWidth;
             canvas.drawLine(x, 0, x, getHeight(), mPaint);
         }
 
         // Draw horizontal line
-        float gridHeight = getGridHeight();
+        float gridHeight = getHeight() * 1f / mRow;   // Use float for higher currency
         for (int i = 0; i <= mRow; i++) {
             float y = i * gridHeight;
             canvas.drawLine(0, y, getWidth(), y, mPaint);
