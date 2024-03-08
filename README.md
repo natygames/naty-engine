@@ -38,7 +38,7 @@ dependencies {
 ```
 
 ## :video_game: Game Project
-[<img src="https://user-images.githubusercontent.com/93536412/227769818-765004b1-7ed5-4b88-9156-1e3d9fd15dcb.png" width="70">](https://github.com/nativegamestudio/juicy-match) 
+[<img src="https://user-images.githubusercontent.com/93536412/227769818-765004b1-7ed5-4b88-9156-1e3d9fd15dcb.png" width="70">](https://github.com/natygames/juicy-match) 
 
 ## :balance_scale: License
  Naty Engine is licensed under the [MIT license](https://github.com/nativegamestudio/naty-engine/blob/master/LICENSE)
